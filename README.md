@@ -15,7 +15,7 @@ Edit the `index.php` file:
 
 ```
 mkdir -p htdocs
-cp index.php.template htdocs/index.php
+cp templates/index.php.template htdocs/index.php
 $EDITOR htdocs/index.php
 ```
 
@@ -23,7 +23,7 @@ Create the database.
 
 Edit the database configuration file:
 ```
-cp myapp/configs/config_database.php.template myapp/configs/config_database.php
+cp templates/config_database.php.template myapp/configs/config_database.php
 $EDITOR myapp/configs/config_database.php
 ```
 
