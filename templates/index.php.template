@@ -8,33 +8,16 @@
  * License:    LGPL, see included license file  
  ***/
 
-/* PHP error reporting level, if different from default */
-error_reporting(E_ALL);
+define('TMVC_BASEDIR', 'PATH_TO_TinyMVC_GLOBAL_FILES');
+define('TMVC_MYAPPDIR', 'PATH_TO_THIS_REPO_ROOT' . '/myapp/');
 
-/* if the /tinymvc/ dir is not up one directory, uncomment and set here */
-//define('TMVC_BASEDIR','');
+error_reporting(E_ALL ^ E_WARNING ^ E_NOTICE);
+define('TMVC_ERROR_HANDLING', 0);
 
-/* if the /myapp/ dir is not inside the /tinymvc/ dir, uncomment and set here */
-//define('TMVC_MYAPPDIR','');
+include_once(TMVC_BASEDIR . 'sysfiles/TinyMVC.php');
+include_once(TMVC_MYAPPDIR . 'plugins/AndroidMarket.class.php');
 
-/* define to 0 if you want errors/exceptions handled externally */
-define('TMVC_ERROR_HANDLING',1);
+session_start();
 
-/* directory separator alias */
-if(!defined('DS'))
-  define('DS',DIRECTORY_SEPARATOR);
-
-/* set the base directory */
-if(!defined('TMVC_BASEDIR'))
-  define('TMVC_BASEDIR',dirname(__FILE__) . DS . '..' . DS . 'tinymvc' . DS);
-
-/* include main tmvc class */
-require(TMVC_BASEDIR . 'sysfiles' . DS . 'TinyMVC.php');
-
-/* instantiate */
 $tmvc = new tmvc();
-
-/* tally-ho! */
 $tmvc->main();
-
-?>
