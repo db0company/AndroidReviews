@@ -17,4 +17,5 @@ $config['default']['user'] = 'dbusername';     // db username
 $config['default']['pass'] = 'dbpassword';     // db password
 $config['default']['persistent'] = false;  // db connection persistence?
 
-?>
+$config['market']['email'] = '';
+$config['market']['pass'] = '';

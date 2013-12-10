@@ -9,13 +9,20 @@ include_once($libpath . 'Market/MarketSession.php');
 class AndroidMarket {
 
   private $session;
+  private $email;
 
   public function __construct($email, $password) {
+    $this->email = $email;
     $this->session = new MarketSession();
-    $this->session->setAndroidId('00000000000000001');
+    $this->session->setAndroidId('317366BD797F0940');
+    $this->session->setOperatorTmobile();
     $this->session->login($email, $password);
     if (!$this->session)
       throw new Exception('Could not connect');
+  }
+
+  public function getEmail() {
+    return $this->email;
   }
 
   private function flatten($array) {
@@ -32,12 +39,14 @@ class AndroidMarket {
 			     $index = 0, $limit = 10) {
     $ar = new AppsRequest();
     $ar->setQuery($query);
+    $ar->setOrderType(AppsRequest_OrderType::POPULAR);
     $ar->setStartIndex($index);
     $ar->setEntriesCount($limit);
     $ar->setWithExtendedInfo($extend);
     $reqGroup = new Request_RequestGroup();
     $reqGroup->setAppsRequest($ar);
-    $response = $this->session->execute($reqGroup);
+    try { $response = $this->session->execute($reqGroup);
+    } catch (Exception $e) { return false; }
     $groups = $response->getResponsegroupArray();
     foreach ($groups as $rg) {
       $appsResponse = $rg->getAppsResponse();
@@ -46,10 +55,30 @@ class AndroidMarket {
     $apps = $this->flatten($apps);
     if ($iconPath) {
       foreach ($apps as $app) {
-	$app->icon = $this->getAppIcon($app->getId(), $iconPath);
+    	$app->icon = $this->getAppIcon($app->getId(), $iconPath);
       }
     }
     return $apps;
+  }
+
+  public function getApp($appId, $extend = false, $iconPath = false) {
+    $ar = new AppsRequest();
+    $ar->setAppId($appId);
+    $ar->setWithExtendedInfo($extend);
+    $reqGroup = new Request_RequestGroup();
+    $reqGroup->setAppsRequest($ar);
+    try { $response = $this->session->execute($reqGroup);
+    } catch (Exception $e) { return false; }
+    $groups = $response->getResponsegroupArray();
+    foreach ($groups as $rg) {
+      $appsResponse = $rg->getAppsResponse();
+      $apps = $appsResponse->getAppArray();
+    }
+    $app = $apps[0];
+    if ($iconPath) {
+      $app->icon = $this->getAppIcon($app->getId(), $iconPath);
+    }
+    return $app;
   }
 
   public function getAppIcon($appId, $path, $overwrite = false) {
@@ -80,7 +109,8 @@ class AndroidMarket {
     $cr->setEntriesCount($limit);
     $reqGroup = new Request_RequestGroup();
     $reqGroup->setCommentsRequest($cr);
-    $response = $this->session->execute($reqGroup);
+    try { $response = $this->session->execute($reqGroup);
+    } catch (Exception $e) { return false; }
     $groups = $response->getResponsegroupArray();
     foreach ($groups as $rg) {
       $commentsResponse = $rg->getCommentsResponse();

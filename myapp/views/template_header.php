@@ -10,5 +10,18 @@
     </script>
     <![endif]-->
   </head>
+  <style>
+    body {
+      white-space: pre;
+      font-family: monospace;
+    }
+  </style>
   <body>
 
+<?php if (!empty($errors)) { ?>
+<?php   foreach ($errors as $error) { ?>
+<div class="alert-error">
+  <?= $error ?>
+</div>
+<?php   } ?>
+<?php } ?>

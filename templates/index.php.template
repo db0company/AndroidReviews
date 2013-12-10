@@ -16,6 +16,7 @@ define('TMVC_ERROR_HANDLING', 0);
 
 include_once(TMVC_BASEDIR . 'sysfiles/TinyMVC.php');
 include_once(TMVC_MYAPPDIR . 'plugins/AndroidMarket.class.php');
+include_once(TMVC_MYAPPDIR . 'plugins/tools.php');
 
 session_start();
 
