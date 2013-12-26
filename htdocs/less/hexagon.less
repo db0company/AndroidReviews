@@ -1,0 +1,37 @@
+
+.hexagonhover(@color) {
+    background-color: @color;
+    &:before {
+	border-bottom-color: @color;
+    }
+    &:after {
+	border-top-color: @color;
+    }
+}
+
+.hexagon(@color, @side : 60px) {
+    @radius: @side * 0.86602540378;
+    margin: (@side / 2) 0;
+    width: @radius * 2;
+    height: @side;
+    background-color: @color;
+    position: relative;
+    &:before, &:after {
+	content: " ";
+	width: 0;
+	height: 0;
+	position: absolute;
+	border-left: @radius solid transparent;
+	border-right: @radius solid transparent;
+	left: 0;
+    }
+    &:before {
+	border-bottom: (@side / 2) solid @color;
+	top: (@side / 2 * -1);
+    }
+    &:after {
+	border-top: (@side / 2) solid @color;
+	bottom: (@side / 2 * -1);
+    }
+}
+

@@ -24,7 +24,7 @@ class Login_Controller extends TinyMVC_Controller
 
     $this->view->display('template_header');
     $this->view->display('login_view');
-    $this->view->display('template_footer');
+    $this->view->display('template_footer_login');
   }
 }
 

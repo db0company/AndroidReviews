@@ -1,7 +1,50 @@
-
-<form method="get" id="f_search" action="/index.php/apps/">
-  <input type="search" value="" name="q" placeholder="Search...">
-  <input type="submit" value="Search">
-</form>
-
-<a href="/index.php/logout">logout</a>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	    <span class="sr-only">Toggle navigation</span>
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	  </button>
+	  <h1><span>A</span>ndroid <span>R</span>eviews <span>M</span>anager</h1>
+        </div> <!-- navbar-header -->
+        <div class="navbar-collapse collapse">
+	  <form method="get" id="f_search" action="<?= getUrl('apps') ?>#add-app" class="search navbar-form navbar-left" role="search">
+            <div class="form-group">
+	      <input class="form-control" type="text" name="q" placeholder="Search...">
+            </div>
+            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+          </form>
+	  <div class="email nav navbar-nav navbar-right">
+	    <?= $email ?>
+	    -
+	    <a href="<?= getUrl('logout') ?>">Sign out</a>
+	  </div> <!-- email -->
+        </div><!-- navbar-collapse -->
+      </div> <!-- container -->
+    </header>
+    <nav class="navbar-default">
+      <a href="<?= getUrl('apps') ?>"<?= $page == 'apps' ? ' class="active"' : ''?>>
+	<i class="fa fa-android fa-2x"></i>
+      </a>
+      <?php foreach ($tracked as $trackedApp) { ?>
+      <a href="<?= getUrl('reviews'),
+	       $trackedApp['id'] ?>"<?= $page == 'app' && $trackedApp['id'] == $app['id'] ?
+				      ' class="active"' : ''?>>
+	<img src="/img/appsicons/<?= $trackedApp['icon'] ?>" alt="<?= $trackedApp['title'] ?>">
+      </a>
+      <?php } ?>
+      <a href="<?= getUrl('apps') ?>#add-app">
+	<i class="fa fa-plus fa-2x"></i>
+      </a>
+      <a href="<?= getUrl('logout') ?>">
+	<i class="fa fa-power-off fa-2x"></i>
+      </a>
+    </nav>
+    <main>
+      <?php if (!empty($errors)) { ?>
+      <?php   foreach ($errors as $error) { ?>
+      <?php     viewAlert('danger', $error); ?>
+      <?php   } ?>
+      <?php } ?>

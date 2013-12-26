@@ -57,3 +57,9 @@ unzip master.zip
 mv master myapp/plugins/android-market-api-php
 rm master.zip
 ```
+
+##### Compile the CSS file
+
+```
+lessc --yui-compress htdocs/less/androidreviews.less > htdocs/css/androidreviews.css
+```

@@ -16,6 +16,7 @@ class Apps_Model extends TinyMVC_Model {
 
   private function reviewToDbLike($appId, $review) {
     return array('app_id' => $appId,
+		 'creationTime' => $review->getCreationTime(),
 		 'author' => $review->getAuthorName(),
 		 'text' => $review->getText(),
 		 'rating' => $review->getRating());
@@ -73,15 +74,25 @@ class Apps_Model extends TinyMVC_Model {
     return reviewId($appId, $review);
   }
 
-  function searchApps($market, $query, $trackedApps, $iconPath = false) {
-    return $this->appsToDbLike($market->searchApps($query, false, $iconPath),
+  function searchApps($market, $query, $trackedApps, $iconPath = false, $index = 0, $limit = 9) {
+    return $this->appsToDbLike($market->searchApps($query, false, $iconPath, $index, $limit),
 			       $trackedApps);
+  }
+
+  private function getTotalUnread($appId, $email) {
+    $c = $this->db->query_one('SELECT count(*) AS unread FROM reviews_tracker AS t JOIN reviews AS r WHERE r.id=t.review_id AND t.user=? AND t.`read`=false AND r.app_id=?',
+			      array($email, $appId));
+    return $c['unread'];
   }
 
   function getTracked($email) {
     try {
       $tracked = $this->db->query_all('SELECT a.*, true AS tracked FROM apps_tracker AS t JOIN apps AS a WHERE a.id=t.app_id AND t.user=?',
 				      array($email));
+      foreach ($tracked as $idx => $app) {
+	$tracked[$idx]['unread'] = $this->getTotalUnread($app['id'], $email);
+	usort($tracked, function($app1, $app2) { return $app2['unread'] - $app1['unread']; });
+      }
     } catch (Exception $e) { return $this->setError($e); }
     return $tracked;
   }
@@ -127,11 +138,13 @@ class Apps_Model extends TinyMVC_Model {
     return true;
   }
 
-  public function getApp($market, $appId, $tracked, $iconPath = false, $update = false) {
+  public function getApp($market, $email, $appId, $tracked, $iconPath = false, $update = false) {
     if (!$update) {
       try { // Get from DB
 	$app = $this->db->query_one('SELECT *, ? AS tracked FROM apps WHERE id=?',
 				    array($tracked, $appId));
+	if ($tracked)
+	  $app['unread'] = $this->getTotalUnread($appId, $email);
       } catch (Exception $e) { return $this->setError($e); }
       if ($app)
 	return $app;
@@ -196,7 +209,7 @@ class Apps_Model extends TinyMVC_Model {
       if (!$this->updateTracking($market, $email, $appId))
 	return false;
       try {
-	$reviews = $this->db->query_all('SELECT r.*, t.read FROM reviews AS r JOIN reviews_tracker AS t WHERE r.app_id=? AND r.id=t.review_id AND t.user=?',
+	$reviews = $this->db->query_all('SELECT r.*, t.read FROM reviews AS r JOIN reviews_tracker AS t WHERE r.app_id=? AND r.id=t.review_id AND t.user=? ORDER BY t.read, r.creationTime',
 					array($appId, $email));
       } catch (Exception $e) { return $this->setError($e); }
       return $reviews;
@@ -208,6 +221,8 @@ class Apps_Model extends TinyMVC_Model {
     $qMark = $this->db->pdo->prepare('UPDATE reviews_tracker SET `read`=? WHERE review_id=? AND user=?');
     try { $qMark->execute(array($status, $reviewId, $email));
     } catch (PDOException $e) { return $this->setError($e); }
+    if (!$qMark->rowCount())
+      return false;
     return true;
   }
 
@@ -219,4 +234,15 @@ class Apps_Model extends TinyMVC_Model {
     return $this->markReview($reviewId, $email, false);
   }
 
+  function markAllRead($appId, $email) {
+    try {
+      $reviews = $this->db->query_all('SELECT * from reviews WHERE app_id=?',
+				      array($appId));
+      foreach ($reviews as $review) {
+	$qMark = $this->db->pdo->prepare('UPDATE reviews_tracker SET `read`=true WHERE review_id=? AND user=?');
+	$qMark->execute(array($review['id'], $email));
+      }
+    } catch (PDOException $e) { return $this->setError($e); }
+    return true;
+  }
 }

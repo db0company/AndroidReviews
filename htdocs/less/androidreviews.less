@@ -1,0 +1,448 @@
+
+//@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,900);
+
+@maincolor: yellowgreen;
+@darkcolor: darken(@maincolor, 10%);
+@darkdarkcolor: darken(@darkcolor, 10%);
+@lightcolor: lighten(@maincolor, 20%);
+@bordercolor: #ddd;
+
+@headersize: 60px;
+@navsize: 64px;
+@minheight: 1200px;
+@generalpadding: 20px;
+
+body {
+    background-color: @maincolor;
+}
+
+.modal {
+    .about {
+	text-align: center;
+	color: @darkcolor;
+	.fa {
+	    font-size: 6em;
+	    padding: 20px;
+	}
+    }
+}
+
+#login {
+    margin-top: 10%;
+    min-height: 300px;
+    background-color: white;
+    border: 1px solid @darkcolor;
+    border-radius: 30px;
+    padding: @generalpadding * 3;
+    .title {
+	text-align: center;
+	h2 {
+	    color: @maincolor;
+	    font-size: 1.6em;
+	    font-style: italic;
+	}
+	h3 {
+	    font-weight: bold;
+	    font-size: 3.5em;
+	}
+    }
+    .create {
+	padding-right: 10px;
+    }
+    .tip {
+	.android {
+	    font-size: 70px;
+	}
+	.sentence {
+	    padding-top: 30px;
+	}
+    }
+}
+
+#login + footer {
+    color: @lightcolor;
+    margin-right: 40px;
+    a {
+	color: @darkdarkcolor;
+    }
+}
+
+body, input, textarea, h1, h2, h3, h5, h6 {
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    color: @maincolor;
+    &:hover {
+	color: @darkcolor;
+    }
+}
+
+.anchor {
+    display: block;
+    height: @headersize + 10;
+}
+
+.btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {   
+    border-color: @maincolor;
+    box-shadow: 0 1px 1px @maincolor inset, 0 0 8px @maincolor;
+    outline: 0 none;
+}
+
+hr.hover {
+    border-color: #ccc;
+    margin-bottom: -20px;
+}
+
+header, nav {
+    overflow: hidden;
+}
+
+header h1, #login h1 {
+    font-weight: bold;
+    span {
+	color: @maincolor;
+    }
+}
+
+header {
+    height: @headersize;
+    h1 {
+	padding-left: 10px;
+	font-size: 24px;
+    }
+    .email {
+	margin-top: (@headersize / 2) - (20px / 2);
+    }
+    .search {
+	margin-top: (@headersize / 2) - (34px / 2);
+	margin-left: 20px;
+	button:hover {
+	    color: @maincolor;
+	    background-color: @lightcolor;
+	    border-color: @maincolor;
+	    &:hover {
+		color: @darkdarkcolor;
+	    }
+	}
+	input, button {
+	    color: @maincolor;
+	}
+    }
+}
+
+nav {
+    margin-top: @headersize;
+    width: @navsize;
+    min-height: @minheight;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-width: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+    text-align: center;
+    a {
+	display: block;
+	padding: 10px;
+	border-bottom: 1px solid @bordercolor;
+	img {
+	    opacity: 0.9;
+	    width: 30px;
+	    height: 30px;
+	}
+	&:hover {
+	    border-left: 5px @darkcolor solid;
+	    img {
+		opacity: 1;
+	    }
+	}
+    }
+    .active {
+	border-left: 5px @maincolor solid;
+    }
+}
+
+.navbar-default {
+    background-color: #eee;
+    border-color: @bordercolor;
+}
+
+.padded {
+    padding: @generalpadding;
+}
+
+main {
+    .padded;
+    margin-top: @headersize;
+    margin-left: @navsize;
+    background: white;
+    min-height: @minheight;
+}
+
+.view_app {
+    padding: 10px;
+}
+
+form.big_search {
+    @margin: 30px;
+    p {
+	color: @darkcolor;
+	margin: @margin;
+    }
+    input[type="text"] {
+	display: block;
+	margin: @margin 5%;
+	width: 90%;
+	border-width: 2px;
+	height: 50px;
+	color: @darkcolor;
+    }
+    input[type="submit"] {
+	margin: @margin;
+	margin-top: 0;
+    }
+}
+
+.alert-android,
+.panel-android > .panel-heading,
+.panel-android > .panel-footer {
+    color: @darkcolor;
+    background-color: @lightcolor;
+    border-color: @maincolor;
+}
+
+.panel-android {
+    border-color: @maincolor;
+    .buttons {
+	padding: 20px;
+    }
+}
+
+.input-android[type="text"],
+.input-android[type="email"],
+.input-android[type="password"] {
+    border-color: @maincolor;
+}
+
+.btn-android {
+    color: white;
+    background-color: @maincolor;
+    border-color: @darkcolor;
+    &:hover {
+	background-color: @darkcolor;
+	border-color: @darkdarkcolor;
+	color: white;
+    }
+}
+
+.text-android {
+    color: @maincolor;
+}
+
+.text-android-dark {
+    color: @darkcolor;
+}
+
+.font-border(@color) {
+    text-shadow: -1px 0 @color, 0 1px @color, 1px 0 @color, 0 -1px @color;
+}
+
+@import "hexagon";
+.app {
+    .read .hexagon {
+	.hexagon(@lightcolor, 30px);
+	&:hover {
+	    .hexagonhover(@maincolor);
+	}
+    }
+    .unread .hexagon {
+	.hexagon(@maincolor, 30px);
+	&:hover {
+	    .hexagonhover(@darkcolor);
+	}
+    }
+    .unread, .read {
+	margin-right: -20px;
+	margin-top: -12px;
+	.bubble {
+	    display: block;
+	    margin-top: -65px;
+	    margin-left: 40px;
+	    color: white;
+	    .fa-comment {
+		color: @maincolor;
+		.font-border(white);
+	    }
+	}
+	.hexagon {
+	    color: white;
+	    font-weight: bold;
+	    text-align: center;
+	    font-size: 20px;
+	}
+	&:hover {
+	    .fa-comment {
+		color: @darkcolor;
+	    }
+	}
+    }
+}
+
+.addapp {
+    border-radius: 10px;
+    display: block;
+    margin: 10px auto;
+    width: 60%;
+    text-align: center;
+    font-weight: bold;
+    border: 5px #ccc dashed;
+    font-size: 6em;
+    text-decoration: none;
+    color: #aaa;
+    &:hover {
+	text-decoration: none;
+	color: #888;
+	border-color: #aaa;
+    }
+}
+
+.start_reading {
+    .play {
+	text-align: center;
+	color: @maincolor;
+	font-size: 15em;
+	margin: 0 auto;
+	padding: 0;
+	cursor: pointer;
+	&:hover {
+	    color: @darkcolor;
+	}
+    }
+    .btn {
+	font-size: 1.8em;
+	padding: 20px;
+    }
+}
+
+.single_app_header {
+    @paddingh: 20px;
+    margin: 0;
+    padding: @paddingh @generalpadding;
+    background: url('/img/bg.png');
+    border-bottom: 5px #ccc solid;
+    min-height: 93px;
+    font-size: 38px;
+    white-space: nowrap;
+    overflow: hidden;
+    .col-md-10 {
+	overflow: hidden;
+    }
+    img {
+	height: 48px;
+    }
+}
+
+.reviews {
+    .padded;
+    .review {
+	.date {
+	    color: #aaa;
+	    font-size: 0.8em;
+	}
+	.panel-body {
+	    overflow: hidden;
+	}
+	.rating {
+	    font-size: 0.6em;
+	}
+    }
+}
+
+.one_view {
+    .col-md-6 {
+	width: 100%;	
+	.review {
+	    display: none;
+	    font-size: 2.3em;
+	    .panel-body {
+		padding: 7%;
+	    }
+	    .panel-footer {
+		padding: 3%;
+	    }
+	    .btn {
+		font-size: 0.8em;
+		padding: 20px;
+	    }
+	    .unread {
+		display: none;
+	    }
+	}
+    }
+    .start_reading {
+	display: block;
+    }
+}
+
+.list_view {
+    .prev, .next {
+	visibility: hidden;
+    }
+    .start_reading {
+	display: none;
+    }
+}
+
+.single_app {
+    overflow: hidden;
+    .btn-android {
+	margin-top: 20px;
+    }
+    ul li {
+	margin-top: 20px;
+    }
+    .read .hexagon {
+	.hexagon(@lightcolor, 40px);
+	&:hover {
+	    .hexagonhover(@maincolor);
+	}
+    }
+    .unread .hexagon {
+	.hexagon(@maincolor, 40px);
+	&:hover {
+	    .hexagonhover(@darkcolor);
+	}
+    }
+    .unread, .read {
+	margin-right: -20px;
+	margin-top: 4px;
+	.bubble {
+	    display: block;
+	    margin-top: -85px;
+	    margin-left: 55px;
+	    color: white;
+	    font-size: 20px;
+	    .fa-comment {
+		color: @maincolor;
+		.font-border(white);
+	    }
+	}
+	.hexagon {
+	    color: white;
+	    font-weight: bold;
+	    text-align: center;
+	    font-size: 30px;
+	}
+	&:hover {
+	    .fa-comment {
+		color: @darkcolor;
+	    }
+	}
+    }
+}
