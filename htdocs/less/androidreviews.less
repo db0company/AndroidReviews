@@ -1,5 +1,6 @@
 
-//@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,900);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,900);
+@import url(http://fonts.googleapis.com/css?family=Lato);
 
 @maincolor: yellowgreen;
 @darkcolor: darken(@maincolor, 10%);
@@ -8,11 +9,14 @@
 @bordercolor: #ddd;
 
 @headersize: 60px;
-@navsize: 64px;
-@minheight: 1200px;
+@navsize: 100%;
 @generalpadding: 20px;
 
 body {
+    background-color: white;
+}
+
+#login-body {
     background-color: @maincolor;
 }
 
@@ -27,6 +31,22 @@ body {
     }
 }
 
+@media only screen 
+and (min-width : 992px) {
+    .divider {
+	margin-right: 0;
+	margin-left: 0;
+	>.col-sm-1, >.col-sm-11 {
+	    padding-right: 0;
+	    padding-left: 0;
+	}
+    }
+}
+
+.fontlato() {
+    font-family: 'Lato', 'Roboto', sans-serif;
+}
+
 #login {
     margin-top: 10%;
     min-height: 300px;
@@ -36,14 +56,17 @@ body {
     padding: @generalpadding * 3;
     .title {
 	text-align: center;
+	font-family: 'Lato', monospace;
 	h2 {
 	    color: @maincolor;
 	    font-size: 1.6em;
 	    font-style: italic;
+	    .fontlato;
 	}
 	h3 {
 	    font-weight: bold;
 	    font-size: 3.5em;
+	    .fontlato;
 	}
     }
     .create {
@@ -57,11 +80,18 @@ body {
 	    padding-top: 30px;
 	}
     }
+    .forgot-password {
+	font-size: 0.8em;
+	margin-top: 2px;
+	margin-left: 8px;
+	margin-bottom: -8px;
+    }
 }
 
 #login + footer {
     color: @lightcolor;
     margin-right: 40px;
+    margin-bottom: 30px;
     a {
 	color: @darkdarkcolor;
     }
@@ -73,7 +103,7 @@ body, input, textarea, h1, h2, h3, h5, h6 {
 
 a {
     color: @maincolor;
-    &:hover {
+    &:hover, &:focus {
 	color: @darkcolor;
     }
 }
@@ -86,6 +116,10 @@ a {
 .btn {
     margin-right: 5px;
     margin-bottom: 5px;
+}
+
+.btn-group .btn {
+    margin-right: 0;
 }
 
 textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {   
@@ -105,6 +139,14 @@ header, nav {
 
 header h1, #login h1 {
     font-weight: bold;
+    .fontlato;
+    a {
+	color: inherit;
+	&:hover, &:focus {
+	    text-decoration: none;
+	    color: inherit;
+	}
+    }
     span {
 	color: @maincolor;
     }
@@ -122,11 +164,11 @@ header {
     .search {
 	margin-top: (@headersize / 2) - (34px / 2);
 	margin-left: 20px;
-	button:hover {
+	button:hover, button:focus {
 	    color: @maincolor;
 	    background-color: @lightcolor;
 	    border-color: @maincolor;
-	    &:hover {
+	    &:hover, &:focus {
 		color: @darkdarkcolor;
 	    }
 	}
@@ -137,26 +179,27 @@ header {
 }
 
 nav {
+    @insidesize: 35px;
     margin-top: @headersize;
     width: @navsize;
-    min-height: @minheight;
-    position: fixed;
-    top: 0;
-    left: 0;
+    //position: fixed;
+    //top: 0;
+    //left: 0;
     border-width: 0;
     border-right-width: 1px;
     border-right-style: solid;
     text-align: center;
     a {
+	font-size: 2em;
 	display: block;
-	padding: 10px;
+	padding: 5% 4px;
 	border-bottom: 1px solid @bordercolor;
 	img {
 	    opacity: 0.9;
-	    width: 30px;
-	    height: 30px;
+	    width: @insidesize;
+	    height: @insidesize;
 	}
-	&:hover {
+	&:hover, &:focus {
 	    border-left: 5px @darkcolor solid;
 	    img {
 		opacity: 1;
@@ -180,9 +223,8 @@ nav {
 main {
     .padded;
     margin-top: @headersize;
-    margin-left: @navsize;
+    //margin-left: @navsize;
     background: white;
-    min-height: @minheight;
 }
 
 .view_app {
@@ -234,7 +276,7 @@ form.big_search {
     color: white;
     background-color: @maincolor;
     border-color: @darkcolor;
-    &:hover {
+    &:hover, &:focus {
 	background-color: @darkcolor;
 	border-color: @darkdarkcolor;
 	color: white;
@@ -249,21 +291,34 @@ form.big_search {
     color: @darkcolor;
 }
 
+.stop {
+    background-color: #f0ad4e;
+    border-color: #eea236;
+    &:hover, &:focus {
+	background-color:#ed9c28;
+	border-color:#d58512;
+    }
+}
+
 .font-border(@color) {
     text-shadow: -1px 0 @color, 0 1px @color, 1px 0 @color, 0 -1px @color;
+}
+
+button.unread {
+    .btn-android;
 }
 
 @import "hexagon";
 .app {
     .read .hexagon {
 	.hexagon(@lightcolor, 30px);
-	&:hover {
+	&:hover, &:focus {
 	    .hexagonhover(@maincolor);
 	}
     }
     .unread .hexagon {
 	.hexagon(@maincolor, 30px);
-	&:hover {
+	&:hover, &:focus {
 	    .hexagonhover(@darkcolor);
 	}
     }
@@ -286,7 +341,7 @@ form.big_search {
 	    text-align: center;
 	    font-size: 20px;
 	}
-	&:hover {
+	&:hover, &:focus {
 	    .fa-comment {
 		color: @darkcolor;
 	    }
@@ -305,7 +360,7 @@ form.big_search {
     font-size: 6em;
     text-decoration: none;
     color: #aaa;
-    &:hover {
+    &:hover, &:focus {
 	text-decoration: none;
 	color: #888;
 	border-color: #aaa;
@@ -320,7 +375,7 @@ form.big_search {
 	margin: 0 auto;
 	padding: 0;
 	cursor: pointer;
-	&:hover {
+	&:hover, &:focus {
 	    color: @darkcolor;
 	}
     }
@@ -330,16 +385,24 @@ form.big_search {
     }
 }
 
-.single_app_header {
-    @paddingh: 20px;
-    margin: 0;
-    padding: @paddingh @generalpadding;
+.big_title {
+    padding: 10px @generalpadding;
     background: url('/img/bg.png');
     border-bottom: 5px #ccc solid;
+    margin-bottom: 20px;
+    .buttons {
+	float: right;
+	padding: 10px;
+    }
+}
+
+.single_app_header {
+    .big_title;
+    padding: 20px @generalpadding;
+    margin: 0;
     min-height: 93px;
     font-size: 38px;
     white-space: nowrap;
-    overflow: hidden;
     .col-md-10 {
 	overflow: hidden;
     }
@@ -409,13 +472,13 @@ form.big_search {
     }
     .read .hexagon {
 	.hexagon(@lightcolor, 40px);
-	&:hover {
+	&:hover, &:focus {
 	    .hexagonhover(@maincolor);
 	}
     }
     .unread .hexagon {
 	.hexagon(@maincolor, 40px);
-	&:hover {
+	&:hover, &:focus {
 	    .hexagonhover(@darkcolor);
 	}
     }
@@ -439,10 +502,84 @@ form.big_search {
 	    text-align: center;
 	    font-size: 30px;
 	}
-	&:hover {
+	&:hover, &:focus {
 	    .fa-comment {
 		color: @darkcolor;
 	    }
 	}
     }
+}
+
+.main-footer {
+    background-color: #eee;
+    border-top: 1px solid #ddd;
+    padding: @generalpadding;
+    a {
+	color: #888;
+	padding-right: @generalpadding;
+    }
+}
+
+@media only screen 
+and (max-width : 992px) {
+
+    .panel-android > .panel-heading > h3 {
+	@scrollbarsize: 25px;
+	height: 48px @scrollbarsize;
+	padding-bottom: -25px;
+	width: 100%;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+    }
+
+    #login {
+	margin: 0;
+	border: 0;
+	border-radius: 0;
+	padding: 10% 0;
+    }
+    #login-body {
+	background-color: white;
+    }
+    main {
+	padding: 0;
+	margin: 0;
+    }
+    .divider {
+	margin: 0;
+	>.col-sm-1 {
+	    padding-right: 0;
+	    padding-left: 0;
+	}
+    }
+    nav {
+	border: 0;
+	border-bottom: 1px solid @bordercolor;
+	margin-bottom: 10px;
+	padding: 0 10px;
+	a {
+	    display: inline-block;
+	    border: 0;
+	    padding: 5px;
+	    &:hover, &:focus {
+		background-color: @darkcolor;
+		border: 0;
+		color: white;
+	    }
+	}
+	.active {
+	    background-color: @maincolor;
+	    color: white;
+	    border: 0;
+	}
+    }
+    .single_app_header {
+	span {
+	    width: 80%;
+	    overflow-y: hidden;
+	    overflow-x: auto;
+	}
+    }
+
 }

@@ -1,7 +1,8 @@
 myapp/configs/config_database.php
+myapp/plugins/consumer.php
+myapp/plugins/android-market-api-php
 htdocs/index.php
 htdocs/img/appsicons
-android-market-api-php
-htdocs/css/androidreviews.css
+htdocs/css/androidreviews.*css
 *~
 #*#

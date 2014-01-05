@@ -16,8 +16,7 @@ class AndroidMarket {
     $this->session = new MarketSession();
     $this->session->setAndroidId('317366BD797F0940');
     $this->session->setOperatorTmobile();
-    $this->session->login($email, $password);
-    if (!$this->session)
+    if (!($this->session->login($email, $password)))
       throw new Exception('Could not connect');
   }
 
@@ -75,6 +74,8 @@ class AndroidMarket {
       $apps = $appsResponse->getAppArray();
     }
     $app = $apps[0];
+    if (!$app)
+      return false;
     if ($iconPath) {
       $app->icon = $this->getAppIcon($app->getId(), $iconPath);
     }
@@ -114,6 +115,8 @@ class AndroidMarket {
     $groups = $response->getResponsegroupArray();
     foreach ($groups as $rg) {
       $commentsResponse = $rg->getCommentsResponse();
+      if (!$commentsResponse)
+	continue;
       $comments[] = $commentsResponse->getCommentsArray();
     }
     return $this->flatten($comments);

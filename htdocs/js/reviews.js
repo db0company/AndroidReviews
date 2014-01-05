@@ -1,27 +1,92 @@
 
+////////////////////////////////////////////
+// Switch Views
+////////////////////////////////////////////
+
+function getURLParameter(name) {
+    return decodeURI((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]);
+}
+
+function switchOneView() {
+    $("#list_view").removeClass('active');
+    $("#one_view").addClass('active');
+    $(".reviews").removeClass('list_view');
+    $(".reviews").addClass('one_view');
+    setEqualHeight();
+};
+
+function switchListView() {
+    $("#one_view").removeClass('active');
+    $("#list_view").addClass('active');
+    $(".reviews").removeClass('one_view');
+    $(".reviews").addClass('list_view');
+    $(".review").show();
+    setEqualHeight();
+}
+
 $("#one_view").click(function(e) {
 	e.preventDefault();
-	$("#list_view").removeClass('active');
-	$(this).addClass('active');
-	$(".reviews").removeClass('list_view');
-	$(".reviews").addClass('one_view');
-	
+	switchOneView();
     });
 
 $("#list_view").click(function(e) {
 	e.preventDefault();
-	$("#one_view").removeClass('active');
-	$(this).addClass('active');
-	$(".reviews").removeClass('one_view');
-	$(".reviews").addClass('list_view');
-	$(".review").show();
+	switchListView();
     });
+
+function switcher(e) {
+    e.preventDefault();
+
+    $(this).parent().find(".btn").removeClass('active');
+    $(this).addClass('active');
+
+    var appId = getURLParameter('id');
+
+    $.get('/index.php/ajax/reviews?appId=' + appId
+    	  + '&filter=' + $(this).prop("id")
+    	  + '&viewStyle=' + ($(".reviews").hasClass('list_view') ? 'list_view' : 'one_view')
+    	  + '&packageName=' + $("#packageName").text(),
+    	  function(result) {
+    	      $(".reviews").replaceWith(result);
+	      setClicks();
+	      setEqualHeight();
+    	  });
+}
+
+$("#view_all").click(switcher);
+$("#view_unread").click(switcher);
+$("#view_read").click(switcher);
+
+$("#list_view").tooltip({ title: 'Overview',
+	    trigger: 'hover',
+	    placement: 'top',
+	    html: false });
+$("#one_view").tooltip({ title: 'Interactive<br>Reviews reader',
+	    trigger: 'hover',
+	    placement: 'top',
+	    html: true });
+$("#view_all").tooltip({ title: 'View all<br>reviews',
+	    trigger: 'hover',
+	    placement: 'top',
+	    html: true });
+$("#view_unread").tooltip({ title: 'View only<br>unread reviews',
+	    trigger: 'hover',
+	    placement: 'top',
+	    html: true });
+$("#view_read").tooltip({ title: 'View only<br>read reviews',
+	    trigger: 'hover',
+	    placement: 'top',
+	    html: true });
+
+////////////////////////////////////////////
+// Mark Read/Unread
+////////////////////////////////////////////
 
 function readToUnreadButton(button) {
     button.removeClass('read');
     button.addClass('unread');
-    button.find('.fa').removeClass('fa-square-o');
-    button.find('.fa').addClass('fa-check-square-o');
+    button.find('.fa').removeClass('fa-envelope');
+    button.find('.fa').addClass('fa-envelope-o');
     button.find('span').text('Mark as read');
     setClicks();
 }
@@ -29,8 +94,8 @@ function readToUnreadButton(button) {
 function unreadToReadButton(button) {
     button.removeClass('unread');
     button.addClass('read');
-    button.find('.fa').removeClass('fa-check-square-o');
-    button.find('.fa').addClass('fa-square-o');
+    button.find('.fa').removeClass('fa-envelope-o');
+    button.find('.fa').addClass('fa-envelope');
     button.find('span').text('Mark as unread');
     setClicks();
 }
@@ -102,9 +167,14 @@ function markAsUnread(review) {
 	  }).fail(fail);
 }
 
+////////////////////////////////////////////
+// Browse Reviews in interactive mode
+////////////////////////////////////////////
+
 function showReview(review) {
     review.show('slow');
-    markAsRead(review);
+    if (review.find('.unread').length > 0)
+	markAsRead(review);
 }
 
 $(".js_start").click(function(e) {
@@ -128,27 +198,40 @@ function setClicks() {
 	    var review = button.closest('.review');
 	    markAsUnread(review);
 	});
+    $(".next").off('click');
+    $(".next").click(function(e) {
+	    e.preventDefault();
+	    var button = $(this);
+	    var review = button.closest('.review');
+	    review.hide('slow');
+	    var idNext = button.find('.id_next').text();
+	    showReview($("#" + idNext));
+	});
+    $(".prev").off('click');
+    $(".prev").click(function(e) {
+	    e.preventDefault();
+	    var button = $(this);
+	    var review = button.closest('.review');
+	    review.hide('slow');
+	    var idPrev = button.find('.id_prev').text();
+	    showReview($("#" + idPrev));
+	});
 }
 
 setClicks();
 
-$(".next").click(function(e) {
-	e.preventDefault();
-	var button = $(this);
-	var review = button.closest('.review');
-	review.hide('slow');
-	var idNext = button.find('.id_next').text();
-	showReview($("#" + idNext));
-    });
-$(".prev").click(function(e) {
-	e.preventDefault();
-	var button = $(this);
-	var review = button.closest('.review');
-	review.hide('slow');
-	var idPrev = button.find('.id_prev').text();
-	showReview($("#" + idPrev));
-    });
+////////////////////////////////////////////
+// Show/Hide summary
+////////////////////////////////////////////
 
 $("summary").click(function() {
 	$(this).text('Show/Hide description');
     });
+
+////////////////////////////////////////////
+// Disable interactive mode on small screens
+////////////////////////////////////////////
+
+if ($(window).width() < 992) {
+    switchListView();
+}

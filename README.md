@@ -24,7 +24,7 @@ Clone or download it from [GitHub](https://github.com/db0company/AndroidReviews)
 
 ###### Create some folders
 
-```
+```shell
 mkdir -p htdocs/img/appsicons/
 ```
 
@@ -33,33 +33,42 @@ mkdir -p htdocs/img/appsicons/
 1. Replace PATH_TO_TinyMVC_GLOBAL_FILES with the path of the `tinymvc` folder you previously installed.
 2. Replace PATH_TO_THIS_REPO_ROOT with the path of the website.
 
-```
+```shell
 cp templates/index.php.template htdocs/index.php
 $EDITOR htdocs/index.php
 ```
 
 ###### Install the database
 
-to do
+```shell
+mysql androidreviews < db.sql
+```
 
 ###### Edit the configuration of the database
 
-```
+```shell
 cp templates/config_database.php.template myapp/configs/config_database.php
 $EDITOR myapp/configs/config_database.php
 ```
 
 ###### Install the unofficial Android Market API:
 
-```
+```shell
 wget https://github.com/splitfeed/android-market-api-php/archive/master.zip
 unzip master.zip
 mv master myapp/plugins/android-market-api-php
 rm master.zip
 ```
 
+###### Install the API consumer
+
+```shell
+wget https://raw.github.com/db0company/generic-api/master/consumer/php/consumer.php -O myapp/plugins/consumer.php
+```
+
+
 ##### Compile the CSS file
 
-```
-lessc --yui-compress htdocs/less/androidreviews.less > htdocs/css/androidreviews.css
+```shell
+lessc --yui-compress htdocs/less/androidreviews.less > htdocs/css/androidreviews.min.css
 ```

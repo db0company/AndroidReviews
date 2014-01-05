@@ -85,14 +85,20 @@ class Apps_Model extends TinyMVC_Model {
     return $c['unread'];
   }
 
-  function getTracked($email) {
+  function getTracked($email, $filter = 'view_all') {
     try {
       $tracked = $this->db->query_all('SELECT a.*, true AS tracked FROM apps_tracker AS t JOIN apps AS a WHERE a.id=t.app_id AND t.user=?',
 				      array($email));
-      foreach ($tracked as $idx => $app) {
+      foreach ($tracked as $idx => $app)
 	$tracked[$idx]['unread'] = $this->getTotalUnread($app['id'], $email);
-	usort($tracked, function($app1, $app2) { return $app2['unread'] - $app1['unread']; });
-      }
+      usort($tracked, function($app1, $app2) { return $app2['unread'] - $app1['unread']; });
+      if ($filter == 'view_unread')
+	$ttracked = array_filter($tracked, function($app) { return $app['unread'] != 0; });
+      elseif ($filter == 'view_read')
+	$ttracked = array_filter($tracked, function($app) { return $app['unread'] == 0; });
+      else
+	$ttracked = $tracked;
+      $tracked = $ttracked;
     } catch (Exception $e) { return $this->setError($e); }
     return $tracked;
   }
@@ -159,14 +165,12 @@ class Apps_Model extends TinyMVC_Model {
   }
 
   private function startTracking($market, $email, $appId, $iconPath = false) {
-    if (!($this->updateApp($market, $appId, $iconPath)))
-      return false;
+    $this->updateApp($market, $appId, $iconPath);
     try {
       $qTracking = $this->db->pdo->prepare('INSERT INTO apps_tracker(user, app_id) VALUES(?, ?)');
       $qTracking->execute(array($email, $appId));
     } catch (PDOException $e) { return $this->setError($e); }
-    if (!($this->updateTracking($market, $email, $appId, false)))
-      return false;
+    $this->updateTracking($market, $email, $appId, false);
     return true;
   }
 
@@ -200,17 +204,21 @@ class Apps_Model extends TinyMVC_Model {
     if (!($this->stopTracking($email, $appId)))
       return false;
     if ($callbackOnStop)
-      $callbackOnStop();
+      $callbackOnStop($appId);
     return true;
   }
 
-  function getReviews($market, $appId, $email) {
+  function getReviews($market, $appId, $email, $filter = 'view_all') {
     if ($this->isTracking($email, $appId)) {
       if (!$this->updateTracking($market, $email, $appId))
 	return false;
       try {
 	$reviews = $this->db->query_all('SELECT r.*, t.read FROM reviews AS r JOIN reviews_tracker AS t WHERE r.app_id=? AND r.id=t.review_id AND t.user=? ORDER BY t.read, r.creationTime',
 					array($appId, $email));
+      if ($filter == 'view_unread')
+	$reviews = array_filter($reviews, function($review) { return !$review['read']; });
+      elseif ($filter == 'view_read')
+	$reviews = array_filter($reviews, function($review) { return $review['read']; });
       } catch (Exception $e) { return $this->setError($e); }
       return $reviews;
     }

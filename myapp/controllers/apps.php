@@ -6,7 +6,6 @@ class Apps_Controller extends TinyMVC_Controller {
     checkLogin();
     $market = getMarket();
     $this->load->model('Apps_Model', 'appmodel');
-    $query = protect($_GET['q']);
 
     // Start/Stop Tracking
     if (isset($_POST['f_track_submit'])
@@ -22,6 +21,40 @@ class Apps_Controller extends TinyMVC_Controller {
     if (($tracked = $this->appmodel->getTracked($market->getEmail())) === false)
       $errors[] = $this->appmodel->lastError;
 
+
+    // View
+    $this->view->assign('page', 'apps');
+    $this->view->assign('errors', $errors);
+    $this->view->assign('tracked', $tracked);
+    $this->view->display('template_header');
+    $this->view->assign('email', $market->getEmail());
+    $this->view->display('template_menu');
+    $this->view->display('apps_view');
+    $this->view->assign('js', 'apps');
+    $this->view->display('template_footer');
+  }
+
+  ///////////////////////////////////////////////
+
+  function search() {
+    checkLogin();
+    $market = getMarket();
+    $this->load->model('Apps_Model', 'appmodel');
+    $query = protect($_GET['q']);
+
+    // Start/Stop Tracking
+    if (isset($_POST['f_track_submit'])
+        && !empty($_POST['f_track_id'])
+	&& !($this->appmodel->switchTracking($market, $market->getEmail(),
+					     protect($_POST['f_track_id']),
+					     getIconPath(),
+					     redirectsApp)))
+      $errors[] = $this->appmodel->lastError;
+
+    // Get tracked Apps
+    if (($tracked = $this->appmodel->getTracked($market->getEmail())) === false)
+      $errors[] = $this->appmodel->lastError;
+
     // Get Search results
     if (!empty($query)
 	&& !($searchApps = $this->appmodel->searchApps($market,
@@ -31,7 +64,7 @@ class Apps_Controller extends TinyMVC_Controller {
       $errorSearch[] = $this->appmodel->lastError;
 
     // View
-    $this->view->assign('page', 'apps');
+    $this->view->assign('page', 'search');
     $this->view->assign('errors', $errors);
     $this->view->assign('tracked', $tracked);
     $this->view->display('template_header');
@@ -42,8 +75,9 @@ class Apps_Controller extends TinyMVC_Controller {
       $this->view->assign('searchApps', $searchApps);
       $this->view->assign('errorSearch', $errorSearch);
     }
-    $this->view->display('apps_view');
+    $this->view->display('search_view');
     $this->view->assign('js', 'apps');
+    $this->view->assign('js', 'search');
     $this->view->display('template_footer');
   }
 
@@ -89,15 +123,20 @@ class Apps_Controller extends TinyMVC_Controller {
     }
 
     // Get App
-    if (!($app = $this->appmodel->getApp($market, $email, $appId, $isTracked, getIconPath())))
+    if (!($app = $this->appmodel->getApp($market, $email, $appId, $isTracked, getIconPath()))) {
       $errors[] = $this->appmodel->lastError;
+      $noapp = true;
+    }
 
-    // Get Reviews
-    if (!($reviews = $this->appmodel->getReviews($market, $appId, $email)))
-      $errorsReviews[] = $this->appmodel->lastError;
+    else {
 
-    // CanReply
-    $canReply = true; // todo$app && $app['contactEmail'] == $email;
+      // Get Reviews
+      if (!($reviews = $this->appmodel->getReviews($market, $appId, $email)))
+	$errorsReviews[] = $this->appmodel->lastError;
+
+      // CanReply
+      $canReply = true; // todo$app && $app['contactEmail'] == $email;
+    }
 
     // View
     $this->view->assign('page', 'app');
@@ -111,7 +150,8 @@ class Apps_Controller extends TinyMVC_Controller {
     $this->view->assign('email', $market->getEmail());
     $this->view->display('template_header');
     $this->view->display('template_menu');
-    $this->view->display('reviews_view');
+    if (!$noapp)
+      $this->view->display('reviews_view');
     $this->view->assign('js', 'reviews');
     $this->view->display('template_footer');
   }
