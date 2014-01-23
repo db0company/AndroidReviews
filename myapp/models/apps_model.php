@@ -4,6 +4,11 @@ class Apps_Model extends TinyMVC_Model {
 
   var $lastError;
 
+  private function setError($msg) {
+    $this->lastError = $msg;
+    return false;
+  }
+
   private function flatten($array) {
     $finalArray = array();
     foreach ($array as $subArray) {
@@ -20,11 +25,6 @@ class Apps_Model extends TinyMVC_Model {
 		 'author' => $review->getAuthorName(),
 		 'text' => $review->getText(),
 		 'rating' => $review->getRating());
-  }
-
-  private function setError($msg) {
-    $this->lastError = $msg;
-    return false;
   }
 
   private function reviewsToDbLike($appId, $reviewsObjects) {
@@ -140,7 +140,7 @@ class Apps_Model extends TinyMVC_Model {
 			       $app->getExtendedInfo()->getDescription(),
 			       $app->getExtendedInfo()->getContactEmail(),
 			       ));
-    } catch (PDOException $e) { return $this->setError($e->getMessage); }
+    } catch (PDOException $e) { return $this->setError(PdoGetMessage($qApp)); }
     return true;
   }
 

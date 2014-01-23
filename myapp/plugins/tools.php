@@ -48,9 +48,16 @@ function idToValid($str) {
   return str_replace('.', '_', str_replace(':', '_', $str));
 }
 
+function getMarketConfig() {
+  include(TMVC_MYAPPDIR.'configs/config_database.php');
+  return $config['market'];
+}
+
 //////////////////////////////////////////////////////////////////
 // Invites API
 //////////////////////////////////////////////////////////////////
+
+include_once(__DIR__.'/consumer.php');
 
 function check_invite($service_name, $invite) {
   return consume('http://invite.paysdu42.fr',
@@ -64,6 +71,11 @@ function use_invite($service_name, $invite) {
                  'invites', 'bool',
                  'PUT', $invite,
                  array('service_name' => $service_name));
+}
+
+function PdoGetMessage($q) {
+  $err = $q->errorInfo();
+  return $err[2];
 }
 
 //////////////////////////////////////////////////////////////////
