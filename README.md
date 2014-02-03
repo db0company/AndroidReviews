@@ -7,7 +7,8 @@ Install it
 ### Requirements
 
 * A web server (ex: Apache)
-* PHP 5.3+
+* PHP 5.3+ with curl support
+* MySQL
 
 ### Manual installation required
 
