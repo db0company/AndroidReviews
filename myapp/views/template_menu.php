@@ -3,14 +3,8 @@
     <header class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-	    <span class="sr-only">Toggle navigation</span>
-	    <span class="icon-bar"></span>
-	    <span class="icon-bar"></span>
-	    <span class="icon-bar"></span>
-	  </button>
 	  <h1>
-	    <a href=".">
+	    <a href="/">
 	      <span>A</span>ndroid <span>R</span>eviews <span>M</span>anager
 	    </a>
 	  </h1o>

@@ -5,7 +5,7 @@ function reviewId($appId, $review) {
 }
 
 function updateTracking($db, $market, $email, $appId, $continue = true) {
-  if (!($reviews = $market->getReviews($appId)))
+  if (($reviews = $market->getReviews($appId)) === false)
     return 'Couldn\'t get reviews from the Android Market.';
   // todo continue get reviews pages
   $qReview = $db->prepare('INSERT INTO reviews(id, app_id, creationTime, author, text, rating) VALUES(?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE author=?, text=?, rating=?, creationTime=?');

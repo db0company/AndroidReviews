@@ -7,9 +7,10 @@ class Help_Controller extends TinyMVC_Controller
     checkLogin();
     $market = getMarket();
     $this->load->model('Apps_Model', 'appmodel');
+    $email = $_SESSION['email'];
 
     // Get tracked Apps
-    if (($tracked = $this->appmodel->getTracked($market->getEmail())) === false)
+    if (($tracked = $this->appmodel->getTracked($email)) === false)
       $errors[] = $this->appmodel->lastError;
 
     $this->view->assign('page', 'help');

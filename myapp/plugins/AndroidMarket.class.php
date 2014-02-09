@@ -14,6 +14,7 @@ class AndroidMarket {
   public function __construct($email, $password) {
     $this->email = $email;
     $this->session = new MarketSession();
+    //$this->session->setAndroidId('0000000000000000');
     $this->session->setAndroidId('317366BD797F0940');
     $this->session->setOperatorTmobile();
     if (!($this->session->login($email, $password)))

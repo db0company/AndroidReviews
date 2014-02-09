@@ -8,9 +8,10 @@ class Ajax_Controller extends TinyMVC_Controller {
     $this->load->model('Apps_Model', 'appmodel');
     $query = protect($_GET['q']);
     $index = intval($_GET['index']);
+    $email = $_SESSION['email'];
 
     // Get tracked Apps
-    if (!($tracked = $this->appmodel->getTracked($market->getEmail())))
+    if (!($tracked = $this->appmodel->getTracked($email)))
       $errors[] = $this->appmodel->lastError;
 
     // Get Search results
@@ -29,7 +30,7 @@ class Ajax_Controller extends TinyMVC_Controller {
     $reviewId = protect($_GET['r']);
     checkLogin();
     $market = getMarket();
-    $email = $market->getEmail();
+    $email = $_SESSION['email'];
     $this->load->model('Apps_Model', 'appmodel');    
     echo ($this->appmodel->markReviewAsRead($reviewId, $email) ?
 	  'true' : 'false');
@@ -39,7 +40,7 @@ class Ajax_Controller extends TinyMVC_Controller {
     $reviewId = protect($_GET['r']);
     checkLogin();
     $market = getMarket();
-    $email = $market->getEmail();
+    $email = $_SESSION['email'];
     $this->load->model('Apps_Model', 'appmodel');    
     echo ($this->appmodel->markReviewAsUnread($reviewId, $email) ?
 	  'true' : 'false');
@@ -50,9 +51,10 @@ class Ajax_Controller extends TinyMVC_Controller {
     $market = getMarket();
     $this->load->model('Apps_Model', 'appmodel');
     $filter = protect($_GET['filter']);
+    $email = $_SESSION['email'];
 
     // Get tracked Apps
-    if (($tracked = $this->appmodel->getTracked($market->getEmail(),
+    if (($tracked = $this->appmodel->getTracked($email,
 						$filter)) === false)
       $errors[] = $this->appmodel->lastError;
 
@@ -67,13 +69,14 @@ class Ajax_Controller extends TinyMVC_Controller {
     $filter = protect($_GET['filter']);
     $packageName = protect($_GET['packageName']);
     $viewStyle = protect($_GET['viewStyle']);
+    $email = $_SESSION['email'];
 
     // Get Reviews
-    if (!($reviews = $this->appmodel->getReviews($market, $appId, $market->getEmail(), $filter)))
+    if (($reviews = $this->appmodel->getReviews($market, $appId, $email, $filter)) === false)
       $errors[] = $this->appmodel->lastError;
 
     // Is tracked?
-    $isTracked = $this->appmodel->isTracking($market->getEmail(), $appId);
+    $isTracked = $this->appmodel->isTracking($email, $appId);
 
     viewReviews($reviews, $isTracked, $errors, $packageName, $viewStyle);
   }
@@ -83,11 +86,12 @@ class Ajax_Controller extends TinyMVC_Controller {
     $market = getMarket();
     $this->load->model('Apps_Model', 'appmodel');
     $appId = protect($_GET['appId']);
+    $email = $_SESSION['email'];
 
     global $switchTrackResult;
 
     // Start/Stop Tracking
-    if (!($this->appmodel->switchTracking($market, $market->getEmail(),
+    if (!($this->appmodel->switchTracking($market, $email,
 					  $appId, getIconPath(),
 					  function() {
 					    global $switchTrackResult;
@@ -99,7 +103,7 @@ class Ajax_Controller extends TinyMVC_Controller {
       $switchTrackResult = 'error';
 
     // Get App
-    if (!($app = $this->appmodel->getApp($market, $market->getEmail(), $appId,
+    if (!($app = $this->appmodel->getApp($market, $email, $appId,
 					 $switchTrackResult == 'start' ? true : false,
 					 getIconPath())))
       $switchTrackResult = 'error';

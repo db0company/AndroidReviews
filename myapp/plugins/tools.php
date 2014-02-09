@@ -357,7 +357,8 @@ function viewModals() {
 
 function viewReviews($reviews, $isTracked, $errorsReviews, $packageName, $viewStyle = null) {
    if (!$viewStyle || ($viewStyle != 'one_view' && $viewStyle != 'list_view'))
-     $viewStyle = $isTracked ? 'one_view' : 'list_view';
+     //$viewStyle = $isTracked ? 'one_view' : 'list_view';
+     $viewStyle = 'list_view';
 ?>
     <div class="reviews <?= $viewStyle ?>">
       <?php

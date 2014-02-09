@@ -17,5 +17,5 @@ $config['default']['user'] = 'dbusername';     // db username
 $config['default']['pass'] = 'dbpassword';     // db password
 $config['default']['persistent'] = false;  // db connection persistence?
 
-$config['market']['email'] = '';
-$config['market']['pass'] = '';
+$config['market']['email'] = ''; // account used to make calls to the android market
+$config['market']['pass'] = ''; // password associated with this account

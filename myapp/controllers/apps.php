@@ -133,7 +133,7 @@ class Apps_Controller extends TinyMVC_Controller {
     else {
 
       // Get Reviews
-      if (!($reviews = $this->appmodel->getReviews($market, $appId, $email)))
+      if (($reviews = $this->appmodel->getReviews($market, $appId, $email, 'view_unread')) === false)
 	$errorsReviews[] = $this->appmodel->lastError;
 
       // CanReply

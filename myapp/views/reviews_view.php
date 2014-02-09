@@ -82,18 +82,18 @@
       <?= $app['title'] ?>
       <div class="btn-toolbar pull-right">
 	<div class="btn-group">
-	  <button class="btn btn-default<?= $isTracked ? ' active' : '' ?>"
+	  <button class="btn btn-default active" id="list_view">
+	    <i class="fa fa-th"></i></button>
+	  <button class="btn btn-default"
 		  <?= $isTracked ? '' : 'disabled="disabled"' ?> id="one_view">
 	    <i class="fa fa-youtube-play"></i></button>
-	  <button class="btn btn-default<?= $isTracked ? '' : ' active' ?>" id="list_view">
-	    <i class="fa fa-th"></i></button>
 	</div> <!-- btn-group -->
 	<?php if ($isTracked) { ?>
 	<div class="btn-group filter">
-	  <button class="btn btn-default active" id="view_all">
-	    <i class="fa fa-th-large"></i></button>
-	  <button class="btn btn-default" id="view_unread">
+	  <button class="btn btn-default active" id="view_unread">
 	    <i class="fa fa-envelope"></i></button>
+	  <button class="btn btn-default" id="view_all">
+	    <i class="fa fa-th-large"></i></button>
 	  <button class="btn btn-default" id="view_read">
 	    <i class="fa fa-envelope-o"></i></button>
 	</div> <!-- btn-group -->
