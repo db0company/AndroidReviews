@@ -56,11 +56,13 @@ $EDITOR myapp/configs/config_database.php
 wget https://raw.github.com/db0company/generic-api/master/consumer/php/consumer.php -O myapp/plugins/consumer.php
 ```
 
-##### Compile the CSS file
+##### In production? Compile the CSS file
 
 ```shell
 lessc --yui-compress htdocs/less/androidreviews.less > htdocs/css/androidreviews.min.css
 ```
+
+Edit the header to comment or remove the 2 lines about less files and uncomment the css line.
 
 ##### Configure your webserver
 
