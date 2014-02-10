@@ -42,7 +42,7 @@ function switcher(e) {
 
     var appId = getURLParameter('id');
 
-    $.get('/index.php/ajax/reviews?appId=' + appId
+    $.get('/ajax/reviews?appId=' + appId
     	  + '&filter=' + $(this).prop("id")
     	  + '&viewStyle=' + ($(".reviews").hasClass('list_view') ? 'list_view' : 'one_view')
     	  + '&packageName=' + $("#packageName").text(),
@@ -133,7 +133,7 @@ function markAsRead(review) {
 	tooltipDelay(button, 'Something went wrong');
 	console.log(res);
     };
-    $.get('/index.php/ajax/markread?r='
+    $.get('/ajax/markread?r='
 	  + reviewId,
 	  function(result) {
 	      if (result == 'true') {
@@ -154,7 +154,7 @@ function markAsUnread(review) {
 	tooltipDelay(button, 'Something went wrong');
 	console.log(res);
     };
-    $.get('/index.php/ajax/markunread?r='
+    $.get('/ajax/markunread?r='
 	  + reviewId,
 	  function(result) {
 	      if (result == 'true') {

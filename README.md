@@ -1,14 +1,15 @@
 AndroidReviews
 ==============
 
-Install it
------------
+Install the Website
+-------------------
 
 ### Requirements
 
 * A web server (ex: Apache)
 * PHP 5.3+ with curl support
 * MySQL
+* `lessc` (installed from packages or `npm`)
 
 ### Manual installation required
 
@@ -24,13 +25,6 @@ Move to the directory you just created with the sources `cd AndroidReviews`
  - If you plan to use TinyMVC for another project, put it in a global location.
  - If you don't, you can just put it in the same directory (`AndroidReviews`)
 
-###### Create some folders
-
-```shell
-cd AndroidReviews
-mkdir -p htdocs/img/appsicons/
-```
-
 ###### Create and edit the `index.php` file
 
 ```shell
@@ -45,6 +39,7 @@ $EDITOR htdocs/index.php
 ###### Install the database
 
 ```shell
+# CREATE DATABASE androidreviews
 mysql androidreviews < db.sql
 ```
 
@@ -53,15 +48,6 @@ mysql androidreviews < db.sql
 ```shell
 cp templates/config_database.php.template myapp/configs/config_database.php
 $EDITOR myapp/configs/config_database.php
-```
-
-###### Install the unofficial Android Market API:
-
-```shell
-wget https://github.com/splitfeed/android-market-api-php/archive/master.zip
-unzip master.zip
-mv master myapp/plugins/android-market-api-php
-rm master.zip
 ```
 
 ###### Install the API consumer
@@ -75,3 +61,56 @@ wget https://raw.github.com/db0company/generic-api/master/consumer/php/consumer.
 ```shell
 lessc --yui-compress htdocs/less/androidreviews.less > htdocs/css/androidreviews.min.css
 ```
+
+##### Configure your webserver
+
+Your domain should point on the `htdocs` folder.
+
+Install the API
+---------------
+
+You may install it on the same server, but the goal of this API is to serve several countries by having APIs installed in several different countries that communicate with the Android Market.
+
+### Requirements
+
+* A web server (ex: Apache)
+* PHP 5.3+ with curl support
+* The submodule `generic-api`, should be cloned automatically with the website
+
+### Manual installation required
+
+Stay in the main folder `AndroidReviews'.
+
+###### Create some folders
+
+```shell
+mkdir -p api/icons/
+```
+
+###### Edit the configuration
+
+```shell
+cp templates/conf.php.template api/conf.php
+$EDITOR api/conf.php
+```
+
+###### Install the unofficial Android Market API:
+
+```shell
+wget https://github.com/splitfeed/android-market-api-php/archive/master.zip
+unzip master.zip
+mv master api/android-market-api-php
+rm master.zip
+```
+
+###### Configure your Apache
+
+Your domain should point on the `api` folder.
+It should start with `country.api.yourdomain` where country is the country code where your server is hosted (`us` or `fr` or instance).
+You should also point a sub domain `files.country.api.yourdomain` to the `api/icons` folder.
+
+Add new countries
+-----------------
+
+You may install as much countries you'd like by installing the API (only, not the website) on different servers in different countries.
+Those countries should be added in the website configuration file. A picture of the flag of the coutry should also be added in the website's folder `htdocs/img/countries`.

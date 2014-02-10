@@ -1,0 +1,3 @@
+[submodule "api/generic-api"]
+	path = api/generic-api
+	url = https://github.com/db0company/generic-api.git

@@ -19,7 +19,6 @@ class Ajax_Controller extends TinyMVC_Controller {
 	&& !($searchApps = $this->appmodel->searchApps($market,
 						       $query,
 						       $tracked,
-						       getIconPath(),
 						       $index)))
       $errorSearch[] = $this->appmodel->lastError;
 
@@ -92,7 +91,7 @@ class Ajax_Controller extends TinyMVC_Controller {
 
     // Start/Stop Tracking
     if (!($this->appmodel->switchTracking($market, $email,
-					  $appId, getIconPath(),
+					  $appId,
 					  function() {
 					    global $switchTrackResult;
 					    $switchTrackResult = 'start';
@@ -104,8 +103,7 @@ class Ajax_Controller extends TinyMVC_Controller {
 
     // Get App
     if (!($app = $this->appmodel->getApp($market, $email, $appId,
-					 $switchTrackResult == 'start' ? true : false,
-					 getIconPath())))
+					 $switchTrackResult == 'start' ? true : false)))
       $switchTrackResult = 'error';
     
     echo json_encode(array('status' => $switchTrackResult,

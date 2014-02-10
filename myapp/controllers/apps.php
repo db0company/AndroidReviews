@@ -13,7 +13,6 @@ class Apps_Controller extends TinyMVC_Controller {
         && !empty($_POST['f_track_id'])
 	&& !($this->appmodel->switchTracking($market, $email,
 					     protect($_POST['f_track_id']),
-					     getIconPath(),
 					     redirectsApp)))
       $errors[] = $this->appmodel->lastError;
 
@@ -43,13 +42,14 @@ class Apps_Controller extends TinyMVC_Controller {
     $email = $_SESSION['email'];
     $this->load->model('Apps_Model', 'appmodel');
     $query = protect($_GET['q']);
+    $country = protect($_GET['country']);
+    $market->country = $country;
 
     // Start/Stop Tracking
     if (isset($_POST['f_track_submit'])
         && !empty($_POST['f_track_id'])
 	&& !($this->appmodel->switchTracking($market, $email,
 					     protect($_POST['f_track_id']),
-					     getIconPath(),
 					     redirectsApp)))
       $errors[] = $this->appmodel->lastError;
 
@@ -62,7 +62,7 @@ class Apps_Controller extends TinyMVC_Controller {
 	&& !($searchApps = $this->appmodel->searchApps($market,
 						       $query,
 						       $tracked,
-						       getIconPath())))
+						       $country)))
       $errorSearch[] = $this->appmodel->lastError;
 
     // View
@@ -103,12 +103,12 @@ class Apps_Controller extends TinyMVC_Controller {
 
     // Start/Stop Tracking
     if (isset($_POST['f_track_submit'])
-	&& !($this->appmodel->switchTracking($market, $email, $appId, getIconPath(),
+	&& !($this->appmodel->switchTracking($market, $email, $appId,
 					     null, redirectsApps)))
-	$errors[] = $this->appmodel->lastError;
+      $errors[] = $this->appmodel->lastError;
 
     // Get tracked Apps
-    if (!($tracked = $this->appmodel->getTracked($email)))
+    if (($tracked = $this->appmodel->getTracked($email)) === false)
       $errors[] = $this->appmodel->lastError;
 
     // Is tracked?
@@ -125,12 +125,16 @@ class Apps_Controller extends TinyMVC_Controller {
     }
 
     // Get App
-    if (!($app = $this->appmodel->getApp($market, $email, $appId, $isTracked, getIconPath()))) {
+    if (!($app = $this->appmodel->getApp($market, $email, $appId, $isTracked))) {
       $errors[] = $this->appmodel->lastError;
       $noapp = true;
     }
 
     else {
+
+      // Get countries
+      if (($countries = $this->appmodel->getCountries($appId)) === false)
+	$errors[] = $this->appmodel->lastError;
 
       // Get Reviews
       if (($reviews = $this->appmodel->getReviews($market, $appId, $email, 'view_unread')) === false)
@@ -148,6 +152,7 @@ class Apps_Controller extends TinyMVC_Controller {
     $this->view->assign('isTracked', $isTracked);
     $this->view->assign('tracked', $tracked);
     $this->view->assign('canReply', $canReply);
+    $this->view->assign('countries', $countries);
     $this->view->assign('reviews', $reviews);
     $this->view->assign('email', $email);
     $this->view->display('template_header');

@@ -122,7 +122,7 @@ a {
     margin-right: 0;
 }
 
-textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {   
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus, .form-control:focus {
     border-color: @maincolor;
     box-shadow: 0 1px 1px @maincolor inset, 0 0 8px @maincolor;
     outline: 0 none;
@@ -237,17 +237,24 @@ form.big_search {
 	color: @darkcolor;
 	margin: @margin;
     }
-    input[type="text"] {
+    input[type="text"],
+    select.form-control {
 	display: block;
 	margin: @margin 5%;
-	width: 90%;
 	border-width: 2px;
-	height: 50px;
 	color: @darkcolor;
+    }
+    input[type="text"] {
+	width: 90%;
+	height: 50px;
+	margin-bottom: 3px;
+    }
+    select.form-control {
+	width:auto;
+	margin: @margin;
     }
     input[type="submit"] {
 	margin: @margin;
-	margin-top: 0;
     }
 }
 
@@ -268,7 +275,8 @@ form.big_search {
 
 .input-android[type="text"],
 .input-android[type="email"],
-.input-android[type="password"] {
+.input-android[type="password"],
+select.form-control {
     border-color: @maincolor;
 }
 

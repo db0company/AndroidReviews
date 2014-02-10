@@ -17,7 +17,7 @@ class Help_Controller extends TinyMVC_Controller
     $this->view->assign('errors', $errors);
     $this->view->assign('tracked', $tracked);
     $this->view->display('template_header');
-    $this->view->assign('email', $market->getEmail());
+    $this->view->assign('email', $email);
     $this->view->display('template_menu');
     $this->view->display('help_view');
     $this->view->display('template_footer');

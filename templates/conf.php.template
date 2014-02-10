@@ -1,0 +1,17 @@
+<?php
+//
+// Made by        db0
+// Contact        db0company@gmail.com
+// Website        http://db0.fr/
+// Repo           https://github.com/db0company/generic-api
+//
+
+$conf['doc']['name'] = 'Android Reviews Manager API';
+$conf['icons_path'] = 'icons/';
+
+$conf['verbose'] = true; // not recommended in production
+$conf['format'] = 'json';
+
+$conf['market']['email'] = ''; // used to connect to the android market
+$conf['market']['pass'] = '';
+$conf['market']['androidid'] = ''; // a valid android phone unique id, use a recent one

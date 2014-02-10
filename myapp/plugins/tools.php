@@ -1,12 +1,12 @@
 <?php
 
 $urls = array(
-	      'login' => '/index.php/login/',
-	      'apps' => '/index.php/apps/',
-              'search' => '/index.php/apps/search',
-	      'reviews' => '/index.php/apps/reviews?id=',
-	      'logout' => '/index.php/logout/',
-	      'help' => '/index.php/help/'
+	      'login' => '/login/',
+	      'apps' => '/apps/',
+              'search' => '/apps/search',
+	      'reviews' => '/apps/reviews?id=',
+	      'logout' => '/logout/',
+	      'help' => '/help/'
 	      );
 
 
@@ -15,26 +15,21 @@ function getUrl($name) {
   return $urls[$name];
 }
 
-function getMarket() {
-  return $_SESSION['AndroidMarket'];
-}
-
 function checkLogin() {
   global $urls;
-  if (!getMarket()) {
+  if (!isset($_SESSION['email'])) {
     header('location: ' . $urls['login']);
   }
+}
+
+function getMarket() {
+  return $_SESSION['AndroidMarket'];
 }
 
 function redirectsApp($appId) {
   global $urls;
   header('location: ' . $urls['reviews'] . $appId);
 }
-
-function getIconPath() {
-  return getcwd() . '/img/appsicons/';
-}
-
 function redirectsApps() {
   global $urls;
   header('location: ' . $urls['apps']);
@@ -46,11 +41,6 @@ function protect($string) {
 
 function idToValid($str) {
   return str_replace('.', '_', str_replace(':', '_', $str));
-}
-
-function getMarketConfig() {
-  include(TMVC_MYAPPDIR.'configs/config_database.php');
-  return $config['market'];
 }
 
 //////////////////////////////////////////////////////////////////
@@ -156,7 +146,7 @@ function viewSearchApp($app) { ?>
 <div class="well">
   <div class="row">
     <div class="col-xs-4">
-      <img src="/img/appsicons/<?= $app['icon'] ?>" alt="<?= $app['title'] ?>">
+      <img src="<?= $app['icon'] ?>" alt="<?= $app['title'] ?>">
     </div> <!-- col -->
     <div class="col-xs-8">
       <h5><?= $app['title'] ?></h5>
@@ -166,7 +156,7 @@ function viewSearchApp($app) { ?>
 	  <i class="fa fa-<?= $app['tracked'] ? 'stop' : 'play' ?>"></i>
 	  <?= $app['tracked'] ? 'Stop' : 'Start' ?> Tracking
 	</button>
-	<a href="/index.php/apps/reviews?id=<?= $app['id'] ?>" class="btn btn-xs btn-android">
+	<a href="/apps/reviews?id=<?= $app['id'] ?>" class="btn btn-xs btn-android">
 	  Browse reviews</a>
       </form>
     </div> <!-- col -->
@@ -214,7 +204,7 @@ function viewTrackedApps($tracked) {
   <div class="panel panel-android app <?= $app['unread'] ? 'has_unread' : 'no_unread' ?>">
     <div class="panel-heading">
       <h3>
-	<img src="/img/appsicons/<?= $app['icon'] ?>" alt="<?= $app['title'] ?>">
+	<img src="<?= $app['icon'] ?>" alt="<?= $app['title'] ?>">
 	<?= $app['title'] ?>
       </h3>
     </div> <!-- panel-heading -->
@@ -248,7 +238,7 @@ function viewTrackedApps($tracked) {
 	  <i class="fa fa-<?= $app['tracked'] ? 'stop' : 'play' ?>"></i>
 	  <?= $app['tracked'] ? 'Stop' : 'Start' ?> Tracking
 	</button>
-	<a href="/index.php/apps/reviews?id=<?= $app['id'] ?>" class="btn btn-android">Browse reviews</a>
+	<a href="/apps/reviews?id=<?= $app['id'] ?>" class="btn btn-android">Browse reviews</a>
       </form>
     </div> <!-- panel-body -->
   </div> <!-- panel -->

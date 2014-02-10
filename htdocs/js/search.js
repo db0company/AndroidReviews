@@ -8,9 +8,9 @@ function trackStarted(app) {
     button.removeClass('start');
     button.addClass('stop');
     button.html('<i class="fa fa-stop"></i> Stop Tracking');
-    $("nav").append('<a href="/index.php/apps/reviews?id='
+    $("nav").append('<a href="/apps/reviews?id='
 		    + app.id
-		    + '"><img src="/img/appsicons/'
+		    + '"><img src="'
 		    + app.icon
 		    + '" alt="'
 		    + app.name
@@ -22,11 +22,11 @@ function trackStopped(app) {
     button.removeClass('stop');
     button.addClass('start');
     button.html('<i class="fa fa-play"></i> Start Tracking');
-    $("nav").find("[href='/index.php/apps/reviews?id=" + app.id + "']").remove();
+    $("nav").find("[href='/apps/reviews?id=" + app.id + "']").remove();
 }
 
 function switchTrack(appId, onfailure) {
-    $.get('/index.php/ajax/switchtrack'
+    $.get('/ajax/switchtrack'
 	  + '?appId=' + appId,
     	  function(result) {
 	      result = jQuery.parseJSON(result);
@@ -95,7 +95,7 @@ function buttonToNextPage(e) {
     var button = $(this);
     var index = button.find(".loadindex").text();
     button.html('<i class="fa fa-refresh fa-spin"></i>');
-    $.get('/index.php/ajax/search?q='
+    $.get('/ajax/search?q='
 	  + $("#searchQuery").text()
 	  + '&index=' + index,
 	  function(result) {

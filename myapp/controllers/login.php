@@ -7,7 +7,8 @@ class Login_Controller extends TinyMVC_Controller
     $this->load->model('Users_Model', 'usermodel');
 
     // Already logged in?
-    if (isset($_SESSION['AndroidMarket']))
+    if (isset($_SESSION['email'])
+	&& isset($_SESSION['AndroidMarket']))
       redirectsApps();
 
     // Forms validation
@@ -19,19 +20,10 @@ class Login_Controller extends TinyMVC_Controller
 	$errors[] = $this->usermodel->lastError;
       else {
 	$email = is_string($email1) ? $email1 : $email2;
-	// Connect to the Android Market
-	try {
-	  $marketConfig = getMarketConfig();
-	  $market = new AndroidMarket($marketConfig['email'],
-				      $marketConfig['pass']);
-	} catch (Exception $_) {
-	  $errors[] = 'Couldn\'t connect to the Android Market. Try again. If the problem persists, contact us.';
-	  $error = true;
-	}
 	// Set session
 	if (!isset($error)) {
 	  $_SESSION['email'] = $email;
-	  $_SESSION['AndroidMarket'] = $market;
+	  $_SESSION['AndroidMarket'] = new AndroidMarket();
 	  redirectsApps();
 	}
       }

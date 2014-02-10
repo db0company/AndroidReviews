@@ -9,7 +9,7 @@ function switcher(e) {
     $(this).parent().find(".btn").removeClass('active');
     $(this).addClass('active');
 
-    $.get('/index.php/ajax/trackedApps?filter='
+    $.get('/ajax/trackedApps?filter='
 	  + $(this).prop("id"),
 	  function(result) {
 	      $("#apps").replaceWith(result);

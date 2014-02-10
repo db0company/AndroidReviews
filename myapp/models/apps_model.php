@@ -19,64 +19,21 @@ class Apps_Model extends TinyMVC_Model {
     return $finalArray;
   }
 
-  private function reviewToDbLike($appId, $review) {
-    return array('app_id' => $appId,
-		 'creationTime' => $review->getCreationTime(),
-		 'author' => $review->getAuthorName(),
-		 'text' => $review->getText(),
-		 'rating' => $review->getRating());
-  }
-
-  private function reviewsToDbLike($appId, $reviewsObjects) {
-    if (!$reviewsObjects)
-      return $this->setError('Could\'nt get reviews on the Android Market.');
-    $reviews = array();
-    foreach ($reviewsObjects as $reviewObject)
-      $reviews[] = $this->reviewToDbLike($appId, $reviewObject);
-    return $reviews;
-  }
-
-  private function appToDbLike_isTracked($tracked, $app) {
-    foreach ($tracked as $trackedApp) {
-      if ($trackedApp['id'] == $app->getId())
-	return true;
-    }
-    return false;
-  }
-
-  private function appToDbLike($app, $tracked = false) {
-    $ext = $app->getExtendedInfo();
-    return array('id' => $app->getId(),
-		 'title' => $app->getTitle(),
-		 'icon' => $app->icon,
-		 'creator' => $app->getCreator(),
-		 'rating' => $app->getRating(),
-		 'ratingsCount' => $app->getRatingsCount(),
-		 'description' => ($ext ? $ext->getDescription() : null),
-		 'contactEmail' => ($ext ? $ext->getContactEmail() : null),
-		 'packageName' => $app->getPackageName(),
-		 'tracked' => $tracked,
-		 );
-  }
-
-  private function appsToDbLike($appsObjects, $trackedApps) {
-    if (!$appsObjects)
-      return $this->setError('Could\'nt get apps from the Android Market.');
-    $apps = array();
-    foreach ($appsObjects as $appObject)
-      $apps[] = $this->appToDbLike($appObject,
-				   $this->appToDbLike_isTracked($trackedApps, $appObject));
-    return $apps;
-  }
-
-
   private function reviewId($appId, $review) {
     return reviewId($appId, $review);
   }
 
-  function searchApps($market, $query, $trackedApps, $iconPath = false, $index = 0, $limit = 9) {
-    return $this->appsToDbLike($market->searchApps($query, false, $iconPath, $index, $limit),
-			       $trackedApps);
+  private function trackedToId($trackedApps) {
+    $ids = array();
+    foreach ($trackedApps as $app)
+      $ids[] = $app['id'];
+    return $ids;
+  }
+
+  function searchApps($market, $query, $trackedApps, $index = 0, $limit = 9) {
+    if (!($apps = $market->searchApps($query, false, $index, $limit, $this->trackedToId($trackedApps))))
+      return $this->setError('Couldn\'t get apps from the Android Market API.');
+    return $apps;
   }
 
   private function getTotalUnread($appId, $email) {
@@ -122,29 +79,29 @@ class Apps_Model extends TinyMVC_Model {
       return $this->setError('Couldn\'t get the app on the Android Market.');
     $qApp = $this->db->pdo->prepare('INSERT INTO apps(id, packageName, title, icon, creator, rating, ratingsCount, description, contactEmail) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE packageName=?, title=?, icon=?, creator=?, rating=?, ratingsCount=?, description=?, contactEmail=?');
     try { $qApp->execute(array(
-			       $app->getId(),
-			       $app->getPackageName(),
-			       $app->getTitle(),
-			       $app->icon,
-			       $app->getCreator(),
-			       $app->getRating(),
-			       $app->getRatingsCount(),
-			       $app->getExtendedInfo()->getDescription(),
-			       $app->getExtendedInfo()->getContactEmail(),
-			       $app->getPackageName(),
-			       $app->getTitle(),
-			       $app->icon,
-			       $app->getCreator(),
-			       $app->getRating(),
-			       $app->getRatingsCount(),
-			       $app->getExtendedInfo()->getDescription(),
-			       $app->getExtendedInfo()->getContactEmail(),
+			       $app['id'],
+			       $app['packageName'],
+			       $app['title'],
+			       $app['icon'],
+			       $app['creator'],
+			       $app['rating'],
+			       $app['ratingsCount'],
+			       $app['description'],
+			       $app['contactEmail'],
+			       $app['packageName'],
+			       $app['title'],
+			       $app['icon'],
+			       $app['creator'],
+			       $app['rating'],
+			       $app['ratingsCount'],
+			       $app['description'],
+			       $app['contactEmail'],
 			       ));
     } catch (PDOException $e) { return $this->setError(PdoGetMessage($qApp)); }
     return true;
   }
 
-  public function getApp($market, $email, $appId, $tracked, $iconPath = false, $update = false) {
+  public function getApp($market, $email, $appId, $tracked, $update = false) {
     if (!$update) {
       try { // Get from DB
 	$app = $this->db->query_one('SELECT *, ? AS tracked FROM apps WHERE id=?',
@@ -155,17 +112,30 @@ class Apps_Model extends TinyMVC_Model {
       if ($app)
 	return $app;
     }
-    if (!($app = $market->getApp($appId, true, $iconPath)))
+    if (!($app = $market->getApp($appId, true, $tracked)))
       return $this->setError('Couldn\'t get the app on the Android Market.');
-    return $this->appToDbLike($app, $tracked);
+    return $app;
   }
 
-  public function updateApp($market, $appId, $iconPath = false) {
-    return $this->addApp($market->getApp($appId, true, $iconPath));
+  public function updateApp($market, $appId) {
+    global $config;
+    $old_country = $market->country;
+    foreach ($config['api']['countries'] as $country) {
+      $market->country = $country;
+      if ($this->addApp($market->getApp($appId, true), $country) === true) {
+	// add in valid countries
+	try {
+	  $q = $this->db->pdo->prepare('INSERT INTO apps_countries(app_id, country) VALUES(?, ?) ON DUPLICATE KEY UPDATE country=country');
+	  $q->execute(array($appId, $country));
+	} catch (PDOException $e) { return $this->setError($e); }
+      }
+    }
+    $market->country = $old_country;
+    return true;
   }
 
-  private function startTracking($market, $email, $appId, $iconPath = false) {
-    $this->updateApp($market, $appId, $iconPath);
+  private function startTracking($market, $email, $appId) {
+    $this->updateApp($market, $appId);
     try {
       $qTracking = $this->db->pdo->prepare('INSERT INTO apps_tracker(user, app_id) VALUES(?, ?)');
       $qTracking->execute(array($email, $appId));
@@ -192,10 +162,10 @@ class Apps_Model extends TinyMVC_Model {
     return true;
   }
 
-  function switchTracking($market, $email, $appId, $iconPath = false,
+  function switchTracking($market, $email, $appId,
 			  $callbackOnStart = null, $callbackOnStop = null) {
     if (!($this->isTracking($email, $appId))) {
-      if (!($this->startTracking($market, $email, $appId, $iconPath)))
+      if (!($this->startTracking($market, $email, $appId)))
 	return false;
       if ($callbackOnStart)
 	$callbackOnStart($appId);
@@ -206,6 +176,18 @@ class Apps_Model extends TinyMVC_Model {
     if ($callbackOnStop)
       $callbackOnStop($appId);
     return true;
+  }
+
+  function getCountries($appId) {
+    try { // Get from DB
+      $dbCountries = $this->db->query_all('SELECT * FROM apps_countries WHERE app_id=?',
+					  array($appId));
+    } catch (Exception $e) { return $this->setError($e); }
+    $countries = array();
+    foreach ($dbCountries as $country) {
+      $countries[] = $country['country'];
+    }
+    return $countries;
   }
 
   function getReviews($market, $appId, $email, $filter = 'view_all') {
@@ -222,7 +204,7 @@ class Apps_Model extends TinyMVC_Model {
       } catch (Exception $e) { return $this->setError($e); }
       return $reviews;
     }
-    return $this->reviewsToDbLike($appId, $market->getReviews($appId));
+    return $market->getReviews($appId);
   }
 
   private function markReview($reviewId, $email, $status) {

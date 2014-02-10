@@ -20,6 +20,11 @@
 	       <div class="pull-right">
 		 <input type="submit" class="btn btn-android" value="Search">
 	       </div>
+	       <select class="form-control" name="country">
+		 <?php global $config; foreach ($config['api']['countries'] as $country) { ?>
+		 <option value="<?= $country ?>" style="background-image: url('/img/countries/<?= $country ?>.png');"<?= $country == $config['api']['default_country'] ? ' selected' : ''?>><?= $country ?></option>
+		 <?php } ?>
+	       </select>
 	     </form>
 	   </div> <!-- col -->
 	   <div class="col-md-8" id="searchResults">

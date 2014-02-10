@@ -1,19 +1,35 @@
 <?php
 
 define('TMVC_MYAPPDIR', '/var/www/androidreviews/myapp/');
+include_once('myapp/plugins/tools.php');
+include_once('myapp/plugins/consumer.php');
 include_once('myapp/plugins/AndroidMarket.class.php');
 include_once('myapp/plugins/updateTracking.php');
 include_once('myapp/configs/config_database.php');
 include_once('Mail.php');
 
-
 function sendMailNewReview($email, $appid, $review) {
-  $content = 'Hello,<br>
+  global $config;
+  $content = '
+<center>
+<h1><span style="color:#9acd32">A</span>ndroid <span style="color:#9acd32">R</span>eviews <span style="color:#9acd32">M</span>anager</h1>
+<i style="color:#9acd32">The growth Android Developer\'s best friend</i>
+</center>
+<br><br>
+
+Hello,<br>
 <br>
 You\'ve got a new review!<br>
-<a href="http://androidreviews.paysdu42.fr/index.php/apps/reviews?id='.$appid.'">Click here to read it and reply to it!</a>';
+<a href="'.$config['website']['url'].'apps/reviews?id='.$appid.'"
+ style="display: inline-block; color: #ffffff; text-decoration: none; font-weight: bold; padding: 20px; background-color: #9acd32; border-radius: 10px; margin: 10px;">
+Read it</a>
 
-  $headers['From']    = 'noreply@paysdu42.fr';
+<br><br>
+<small style="color: #cccccc;">You received this email because you follow an app on <a href="'.$config['website']['url'].'">AndroidReviewsManager</a>. Unfollow this app to stop receiving this kind of emails.</small>
+</center>
+';
+
+  $headers['From']    = 'notifications@androidreviewsmanager.com';
   $headers['To']      = $email;
   $headers['Subject'] = 'New Review';
   $content = utf8_encode($content);
@@ -25,12 +41,11 @@ You\'ve got a new review!<br>
   $mail_object =& Mail::factory('sendmail', $params);
   $mail_object->send($headers['To'], $headers, $content);
 
-  echo 'New review, email sent! '.$email.' '.$appid.' '.$review;
+  echo 'New review, email sent! '.$email.' '.$appid.' '.$review."\n";
 }
 
 
-$market = new AndroidMarket($config['market']['email'],
-			    $config['market']['pass']);
+$market = new AndroidMarket();
 
 $db = new PDO('mysql:host='.$config['default']['host'].';dbname='.$config['default']['name'],
               $config['default']['user'], $config['default']['pass']);

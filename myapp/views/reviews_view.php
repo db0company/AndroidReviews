@@ -3,7 +3,7 @@
   <div class="col-md-3">
     <div class="single_app">
       <h3 class="single_app_header">
-	<img src="/img/appsicons/<?= $app['icon'] ?>" alt="<?= $app['title'] ?>">
+	<img src="<?= $app['icon'] ?>" alt="<?= $app['title'] ?>">
 	<span class="visible-xs visible-sm pull-right">
 	  <?= $app['title'] ?>
 	</span>
@@ -36,6 +36,10 @@
 	  <?php if ($isTracked) { ?>
 	  <input type="submit" name="f_mark_all_read" class="btn btn-default btn-xs btn-lg"
 		 value="Mark all as read">
+	  <?php } ?>
+	  <br>
+	  <?php foreach ($countries as $country) { ?>
+	  <img src="/img/countries/<?= $country ?>.png" alt="<?= $country ?>" />
 	  <?php } ?>
 	</form>
 	<ul class="fa-ul">

@@ -39,7 +39,7 @@
 	  <a href="<?= getUrl('reviews'),
 		   $trackedApp['id'] ?>"<?= $page == 'app' && $trackedApp['id'] == $app['id'] ?
 					    ' class="active"' : ''?>>
-	    <img src="/img/appsicons/<?= $trackedApp['icon'] ?>" alt="<?= $trackedApp['title'] ?>"></a>
+	    <img src="<?= $trackedApp['icon'] ?>" alt="<?= $trackedApp['title'] ?>"></a>
 	  <?php } ?>
 	</nav>
       </div> <!-- col -->
