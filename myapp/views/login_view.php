@@ -2,18 +2,61 @@
 
   <?php viewModals(); ?>
 
+  <div class="modal fade" id="modalForgot" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+	<div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Forgot password?</h4>
+	</div>
+	<div class="modal-body">
+	  <?php if (empty($_GET['reset_email'])) { ?>
+	  <form method="post" class="form-horizontal" role="form" id="f_forgot">
+	    <div class="form-group">
+	      <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+	      <div class="col-sm-10">
+		<input type="email" name="f_forgot_email" class="form-control" id="inputEmail" placeholder="Your E-mail address" required>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-sm-offset-2 col-sm-10">
+		<button type="submit" class="btn btn-android">Send a code</button>
+	      </div>
+	    </div>
+	  </form>
+	  <?php } else { ?>
+	  <form method="post" class="form-horizontal" role="form" id="f_reset">
+	    <div class="form-group">
+	      <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+	      <div class="col-sm-10">
+		<input type="hidden" name="f_reset_email" value="<?= $_GET['reset_email'] ?>" required>
+		<input type="hidden" name="f_reset_code" value="<?= $_GET['reset_code'] ?>" required>
+		<input type="password" name="f_reset_password" class="form-control" id="inputPassword" placeholder="Your new password" required>
+		<br>
+		<input type="password" name="f_reset_passwordcheck" class="form-control" placeholder="Your new password, again" required>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-sm-offset-2 col-sm-10">
+		<button type="submit" class="btn btn-android">Change your password</button>
+	      </div>
+	    </div>
+	  </form>
+	  <?php } ?>
+	</div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 <div class="container">
   <main id="login">
     <div class="row">
       <div class="col-md-6 title">
-	<h1><span>A</span>ndroid <span>R</span>eviews <span>M</span>anager</h1>
+	<h1><span>A</span>ndroid <span>R</span>eviews <span>M</span>anager <small>&beta;eta</small></h1>
 	<h2>The growth Android Developer's best friend</h2>
 	<h3>Never miss a review again!</h3>
       </div> <!-- col -->
       <div class="col-md-6">
-	<?php if ($is_error) { ?>
-	<?php viewAlert('danger', 'Please check your e-mail and your password again.'); ?>
-	<?php } ?>
 	<div class="row tip">
 	  <div class="col-xs-9 text-android text-right">
 	    <div class="sentence"></div> <!-- sentence-->
@@ -23,6 +66,9 @@
 	  </div> <!-- col -->
 	</div> <!-- row tip -->
 
+	<?php if (isset($email_sent) && $email_sent) { ?>
+	<?php   viewAlert('android', 'An e-mail has been sent to you with a link. Click on it to reset your password.'); ?>
+	<?php } ?>
 	<?php if (!empty($errors)) { ?>
 	<?php   foreach ($errors as $error) { ?>
 	<?php     viewAlert('danger', $error); ?>
@@ -35,7 +81,7 @@
 	    <label for="f_ask_invite_email" class="col-sm-2 control-label">Email</label>
 	    <div class="col-sm-10">
 	      <input type="email" class="form-control" id="f_ask_invite_email"
-		     value="" name="f_login_email" placeholder="Your E-mail address">
+		     value="" name="f_login_email" placeholder="Your E-mail address" required>
 	    </div>
 	  </div>
 	  <div class="form-group">
@@ -45,6 +91,7 @@
 			name="f_ask_invite_about"
 			placeholder="Tell us a little bit more about you! Developer? Community manager? Curious user? What are the apps you would like to track?"
 			rows="4"
+			required
 			></textarea>
 	    </div>
 	  </div>
@@ -66,17 +113,17 @@
 	    <label for="f_login_email" class="col-sm-2 control-label">Email</label>
 	    <div class="col-sm-10">
 	  <input type="email" class="form-control" id="f_login_email"
-		 value="" name="f_login_email" placeholder="Your Google E-mail address">
+		 value="" name="f_login_email" placeholder="Your E-mail address" required>
 	    </div>
 	  </div>
 	  <div class="form-group">
 	    <label for="f_login_password" class="col-sm-2 control-label">Password</label>
 	    <div class="col-sm-10">
 	      <input type="password" class="form-control" id="f_login_password"
-		     name="f_login_password" placeholder="Your Google Password">
+		     name="f_login_password" placeholder="Your Password" required>
 	      <div class="forgot-password">
 		<small>
-		  <a href="#forgot">
+		  <a href="#forgot" data-toggle="modal" data-target="#modalForgot">
 		    Forgot password?
 		  </a>
 		</small>
@@ -104,17 +151,17 @@
 	    <label for="f_create_account_email" class="col-sm-2 control-label">Email</label>
 	    <div class="col-sm-10">
 	  <input type="email" class="form-control" id="f_create_account_email"
-		 value="" name="f_create_account_email" placeholder="Your E-mail address">
+		 value="" name="f_create_account_email" placeholder="Your E-mail address" required>
 	    </div>
 	  </div>
 	  <div class="form-group">
 	    <label for="f_create_account_password" class="col-sm-2 control-label">Password</label>
 	    <div class="col-sm-10">
 	      <input type="password" class="form-control" id="f_create_account_password"
-		     name="f_create_account_password" placeholder="Your Password">
+		     name="f_create_account_password" placeholder="Your Password" required>
 	      <br>
 	      <input type="password" class="form-control" id="f_create_account_password_check"
-		     name="f_create_account_password_check" placeholder="Retype your password">
+		     name="f_create_account_password_check" placeholder="Retype your password" required>
 	    </div>
 	  </div>
 	  <div class="form-group">
@@ -128,7 +175,6 @@
 	    </div>
 	  </div>
 	</form>
-
 
       </div> <!-- col -->
     </div> <!-- row -->

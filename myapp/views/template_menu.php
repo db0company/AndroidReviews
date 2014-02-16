@@ -7,7 +7,8 @@
 	    <a href="/">
 	      <span>A</span>ndroid <span>R</span>eviews <span>M</span>anager
 	    </a>
-	  </h1o>
+            <small>&beta;eta</small>
+	  </h1>
         </div> <!-- navbar-header -->
         <div class="navbar-collapse collapse">
 	  <form method="get" id="f_search" action="<?= getUrl('search') ?>" class="search navbar-form navbar-left" role="search">

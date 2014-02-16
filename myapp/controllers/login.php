@@ -3,6 +3,12 @@
 class Login_Controller extends TinyMVC_Controller
 {
 
+  private function login($email) {
+    $_SESSION['email'] = $email;
+    $_SESSION['AndroidMarket'] = new AndroidMarket();
+    redirectsApps();
+  }
+
   function index() {
     $this->load->model('Users_Model', 'usermodel');
 
@@ -21,12 +27,24 @@ class Login_Controller extends TinyMVC_Controller
       else {
 	$email = is_string($email1) ? $email1 : $email2;
 	// Set session
-	if (!isset($error)) {
-	  $_SESSION['email'] = $email;
-	  $_SESSION['AndroidMarket'] = new AndroidMarket();
-	  redirectsApps();
-	}
+	if (!isset($error))
+	  $this->login($email);
       }
+    }
+
+    // Forgot password forms
+    if (isset($_POST['f_forgot_email'])) {
+      if ($this->usermodel->forgotPassword())
+	$this->view->assign('email_sent', true);
+      else
+	$errors[] = $this->usermodel->lastError;
+    }
+    // Reset password
+    if (isset($_POST['f_reset_email'])) {
+      if ($this->usermodel->resetPassword())
+	$this->login(protect($_POST['f_reset_email']));
+      else
+	$errors[] = $this->usermodel->lastError;
     }
 
     // Views

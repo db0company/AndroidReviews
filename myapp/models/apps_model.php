@@ -195,7 +195,7 @@ class Apps_Model extends TinyMVC_Model {
       if (!$this->updateTracking($market, $email, $appId))
 	return false;
       try {
-	$reviews = $this->db->query_all('SELECT r.*, t.read FROM reviews AS r JOIN reviews_tracker AS t WHERE r.app_id=? AND r.id=t.review_id AND t.user=? ORDER BY t.read, r.creationTime',
+	$reviews = $this->db->query_all('SELECT r.*, t.read FROM reviews AS r JOIN reviews_tracker AS t WHERE r.app_id=? AND r.id=t.review_id AND t.user=? ORDER BY t.read, r.creationTime DESC',
 					array($appId, $email));
       if ($filter == 'view_unread')
 	$reviews = array_filter($reviews, function($review) { return !$review['read']; });

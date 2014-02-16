@@ -87,3 +87,15 @@ CREATE TABLE IF NOT EXISTS `apps_countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_id` (`app_id`,`country`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forgot_password`
+--
+
+CREATE TABLE IF NOT EXISTS `forgot_password` (
+  `email` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

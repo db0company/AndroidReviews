@@ -81,6 +81,8 @@ $(document).ready(function() {
        $("#f_ask_invite").show();
        $("#f_login").hide();
        $("#f_create_account").hide();
+  } else if (anchor == 'forgot') {
+      $("#modalForgot").modal('show');
   } else if (anchor != '') {
       normalMsg();
       var invite = anchor;
@@ -99,6 +101,14 @@ $(document).ready(function() {
   } else
       inviteMsg();
 
+   $('a[href="#forgot"]').click(function(e) {
+	   e.preventDefault();
+	   removeErrors();
+	   normalMsg();
+	   $("#f_ask_invite").hide('slow');
+	   $("#f_login").hide('slow');
+	   $("#f_create_account").show('slow');
+       });
    $('a[href="#create-account"]').click(function(e) {
 	   e.preventDefault();
 	   removeErrors();
