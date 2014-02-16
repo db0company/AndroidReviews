@@ -9,6 +9,8 @@ class Ajax_Controller extends TinyMVC_Controller {
     $query = protect($_GET['q']);
     $index = intval($_GET['index']);
     $email = $_SESSION['email'];
+    $country = protect($_GET['country']);
+    $market->country = $country;
 
     // Get tracked Apps
     if (!($tracked = $this->appmodel->getTracked($email)))

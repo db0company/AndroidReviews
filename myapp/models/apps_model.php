@@ -106,11 +106,12 @@ class Apps_Model extends TinyMVC_Model {
       try { // Get from DB
 	$app = $this->db->query_one('SELECT *, ? AS tracked FROM apps WHERE id=?',
 				    array($tracked, $appId));
+      } catch (Exception $e) { return $this->setError($e); }
+      if ($app) {
 	if ($tracked)
 	  $app['unread'] = $this->getTotalUnread($appId, $email);
-      } catch (Exception $e) { return $this->setError($e); }
-      if ($app)
 	return $app;
+      }
     }
     if (!($app = $market->getApp($appId, true, $tracked)))
       return $this->setError('Couldn\'t get the app on the Android Market.');
@@ -120,9 +121,11 @@ class Apps_Model extends TinyMVC_Model {
   public function updateApp($market, $appId) {
     global $config;
     $old_country = $market->country;
-    foreach ($config['api']['countries'] as $country) {
+    $flag = false;
+    foreach ($config['api']['countries'] as $country => $_) {
       $market->country = $country;
       if ($this->addApp($market->getApp($appId, true), $country) === true) {
+	$flag = true;
 	// add in valid countries
 	try {
 	  $q = $this->db->pdo->prepare('INSERT INTO apps_countries(app_id, country) VALUES(?, ?) ON DUPLICATE KEY UPDATE country=country');
@@ -130,12 +133,15 @@ class Apps_Model extends TinyMVC_Model {
 	} catch (PDOException $e) { return $this->setError($e); }
       }
     }
+    if (!$flag)
+      return false;
     $market->country = $old_country;
     return true;
   }
 
   private function startTracking($market, $email, $appId) {
-    $this->updateApp($market, $appId);
+    if (!($this->updateApp($market, $appId)))
+      return false;
     try {
       $qTracking = $this->db->pdo->prepare('INSERT INTO apps_tracker(user, app_id) VALUES(?, ?)');
       $qTracking->execute(array($email, $appId));

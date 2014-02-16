@@ -9,7 +9,7 @@ class AndroidMarket {
 
   private function url() {
     global $config;
-    if (!in_array($this->country, $config['api']['countries']))
+    if (!array_key_exists($this->country, $config['api']['countries']))
       $this->country = $config['api']['default_country'];
     return 'http://'.$this->country.'.'.$config['api']['base_url'];
   }

@@ -68,23 +68,25 @@ $("[name='f_track_submit']").click(function(e) {
 
 function updateTotal() {
     $(".total-search").text($(".well").length);
+
+    $(".track-all").unbind('click');
+    $(".track-all").click(function(e) {
+	    e.preventDefault();
+	    $(".f_track .start").each(function() {
+		    switchTrackClick($(this));
+		});
+	});
+
+    $(".untrack-all").unbind('click');
+    $(".untrack-all").click(function(e) {
+	    e.preventDefault();
+	    $(".f_track .stop").each(function() {
+		    switchTrackClick($(this));
+		});
+	});
 }
 
 updateTotal();
-
-$(".track-all").click(function(e) {
-	e.preventDefault();
-	$(".f_track .start").each(function() {
-		switchTrackClick($(this));
-	    });
-    });
-
-$(".untrack-all").click(function(e) {
-	e.preventDefault();
-	$(".f_track .stop").each(function() {
-		switchTrackClick($(this));
-	    });
-    });
 
 ////////////////////////////////////////////
 // Ajax load results
@@ -97,7 +99,7 @@ function buttonToNextPage(e) {
     button.html('<i class="fa fa-refresh fa-spin"></i>');
     $.get('/ajax/search?q='
 	  + $("#searchQuery").text()
-	  + '&index=' + index,
+	  + '&index=' + index + '&country=' + $("select.form-control[name='country']").val(),
 	  function(result) {
 	      button.parent().replaceWith(result);
 	      $("#loadmore").on('click', buttonToNextPage);

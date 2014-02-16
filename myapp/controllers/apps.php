@@ -61,8 +61,7 @@ class Apps_Controller extends TinyMVC_Controller {
     if (!empty($query)
 	&& !($searchApps = $this->appmodel->searchApps($market,
 						       $query,
-						       $tracked,
-						       $country)))
+						       $tracked)))
       $errorSearch[] = $this->appmodel->lastError;
 
     // View
