@@ -16,15 +16,22 @@
 		 You're not tracking any app yet. Start tracking your favorite apps today by searching for them!
 	       </p>
 	       <?php } ?>
-	       <input type="text" value="" name="q" placeholder="Search..." class="form-control input-android">
+	       <input type="text" value="<?= isset($searchQuery) ? $searchQuery : '' ?>" name="q" placeholder="Search..." class="form-control input-android">
 	       <div class="pull-right">
 		 <input type="submit" class="btn btn-android" value="Search">
 	       </div>
-	       <select class="form-control" name="country">
-		 <?php global $config; foreach ($config['api']['countries'] as $country) { ?>
-		 <option value="<?= $country ?>" style="background-image: url('/img/countries/<?= $country ?>.png');"<?= $country == $config['api']['default_country'] ? ' selected' : ''?>><?= $country ?></option>
-		 <?php } ?>
-	       </select>
+	       <div class="subform">
+		 <small>Play Store</small>
+		 <select class="form-control" name="country">
+		   <?php global $config; foreach ($config['api']['countries'] as $country_url => $country_name) { ?>
+		   <option value="<?= $country_url ?>" style="background-image: url('/img/countries/<?= $country_url ?>.png');"
+			   <?php if ((isset($searchCountry) && $country_url == $searchCountry)
+				 || (!(isset($searchCountry)) && $country_url == $config['api']['default_country'])) {
+				 echo ' selected';
+				 } ?>><?= $country_name ?></option>
+		   <?php } ?>
+		 </select>
+	       </div>
 	     </form>
 	   </div> <!-- col -->
 	   <div class="col-md-8" id="searchResults">

@@ -249,9 +249,15 @@ form.big_search {
 	height: 50px;
 	margin-bottom: 3px;
     }
-    select.form-control {
-	width:auto;
+    .subform {
 	margin: @margin;
+	select.form-control {
+	    width: auto;
+	    display: inline-block;
+	    margin: 0;
+	    margin-left: 10px;
+	}
+	color: @maincolor;
     }
     input[type="submit"] {
 	margin: @margin;

@@ -73,6 +73,7 @@ class Apps_Controller extends TinyMVC_Controller {
     $this->view->assign('email', $email);
     $this->view->display('template_menu');
     if (isset($searchApps)) {
+      $this->view->assign('searchCountry', $country);
       $this->view->assign('searchQuery', $query);
       $this->view->assign('searchApps', $searchApps);
       $this->view->assign('errorSearch', $errorSearch);
