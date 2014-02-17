@@ -1,59 +1,11 @@
 <body id="login-body">
 
-  <?php viewModals(); ?>
-
-  <div class="modal fade" id="modalForgot" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-	<div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Forgot password?</h4>
-	</div>
-	<div class="modal-body">
-	  <?php if (empty($_GET['reset_email'])) { ?>
-	  <form method="post" class="form-horizontal" role="form" id="f_forgot">
-	    <div class="form-group">
-	      <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-	      <div class="col-sm-10">
-		<input type="email" name="f_forgot_email" class="form-control" id="inputEmail" placeholder="Your E-mail address" required>
-	      </div>
-	    </div>
-	    <div class="form-group">
-	      <div class="col-sm-offset-2 col-sm-10">
-		<button type="submit" class="btn btn-android">Send a code</button>
-	      </div>
-	    </div>
-	  </form>
-	  <?php } else { ?>
-	  <form method="post" class="form-horizontal" role="form" id="f_reset">
-	    <div class="form-group">
-	      <label for="inputPassword" class="col-sm-2 control-label">Password</label>
-	      <div class="col-sm-10">
-		<input type="hidden" name="f_reset_email" value="<?= $_GET['reset_email'] ?>" required>
-		<input type="hidden" name="f_reset_code" value="<?= $_GET['reset_code'] ?>" required>
-		<input type="password" name="f_reset_password" class="form-control" id="inputPassword" placeholder="Your new password" required>
-		<br>
-		<input type="password" name="f_reset_passwordcheck" class="form-control" placeholder="Your new password, again" required>
-	      </div>
-	    </div>
-	    <div class="form-group">
-	      <div class="col-sm-offset-2 col-sm-10">
-		<button type="submit" class="btn btn-android">Change your password</button>
-	      </div>
-	    </div>
-	  </form>
-	  <?php } ?>
-	</div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-
 <div class="container">
   <main id="login">
     <div class="row">
       <div class="col-md-6 title">
 	<h1><span>A</span>ndroid <span>R</span>eviews <span>M</span>anager <small>&beta;eta</small></h1>
-	<h2>The growth Android Developer's best friend</h2>
+	<h2>The Android Developer's best friend</h2>
 	<h3>Never miss a review again!</h3>
       </div> <!-- col -->
       <div class="col-md-6">
@@ -179,3 +131,57 @@
       </div> <!-- col -->
     </div> <!-- row -->
   </main>
+
+  <footer class="text-right">
+    <a href="#about" data-toggle="modal" data-target="#modalAbout">About</a> - 
+    <a href="#terms" data-toggle="modal" data-target="#modalTerms">Terms Of Service</a> - 
+    <a href="#privacy" data-toggle="modal" data-target="#modalPrivacy">Privacy Policy</a>
+  </footer> <!-- text-right -->
+
+</div> <!-- container -->
+
+  <div class="modal fade" id="modalForgot" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+	<div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Forgot password?</h4>
+	</div>
+	<div class="modal-body">
+	  <?php if (empty($_GET['reset_email'])) { ?>
+	  <form method="post" class="form-horizontal" role="form" id="f_forgot">
+	    <div class="form-group">
+	      <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+	      <div class="col-sm-10">
+		<input type="email" name="f_forgot_email" class="form-control" id="inputEmail" placeholder="Your E-mail address" required>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-sm-offset-2 col-sm-10">
+		<button type="submit" class="btn btn-android">Send a code</button>
+	      </div>
+	    </div>
+	  </form>
+	  <?php } else { ?>
+	  <form method="post" class="form-horizontal" role="form" id="f_reset">
+	    <div class="form-group">
+	      <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+	      <div class="col-sm-10">
+		<input type="hidden" name="f_reset_email" value="<?= $_GET['reset_email'] ?>" required>
+		<input type="hidden" name="f_reset_code" value="<?= $_GET['reset_code'] ?>" required>
+		<input type="password" name="f_reset_password" class="form-control" id="inputPassword" placeholder="Your new password" required>
+		<br>
+		<input type="password" name="f_reset_passwordcheck" class="form-control" placeholder="Your new password, again" required>
+	      </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-sm-offset-2 col-sm-10">
+		<button type="submit" class="btn btn-android">Change your password</button>
+	      </div>
+	    </div>
+	  </form>
+	  <?php } ?>
+	</div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->

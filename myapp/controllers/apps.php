@@ -31,6 +31,7 @@ class Apps_Controller extends TinyMVC_Controller {
     $this->view->display('template_menu');
     $this->view->display('apps_view');
     $this->view->assign('js', 'apps');
+    $this->view->display('modals_view');
     $this->view->display('template_footer');
   }
 
@@ -80,6 +81,7 @@ class Apps_Controller extends TinyMVC_Controller {
     $this->view->display('search_view');
     $this->view->assign('js', 'apps');
     $this->view->assign('js', 'search');
+    $this->view->display('modals_view');
     $this->view->display('template_footer');
   }
 
@@ -160,6 +162,7 @@ class Apps_Controller extends TinyMVC_Controller {
     if (!$noapp)
       $this->view->display('reviews_view');
     $this->view->assign('js', 'reviews');
+    $this->view->display('modals_view');
     $this->view->display('template_footer');
   }
 }

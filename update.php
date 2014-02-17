@@ -13,7 +13,7 @@ function sendMailNewReview($email, $appid, $review) {
   $content = '
 <center>
 <h1><span style="color:#9acd32">A</span>ndroid <span style="color:#9acd32">R</span>eviews <span style="color:#9acd32">M</span>anager</h1>
-<i style="color:#9acd32">The growth Android Developer\'s best friend</i>
+<i style="color:#9acd32">The Android Developer\'s best friend</i>
 </center>
 <br><br>
 
