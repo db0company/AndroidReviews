@@ -69,6 +69,66 @@ function PdoGetMessage($q) {
 }
 
 //////////////////////////////////////////////////////////////////
+// Submit contact form
+//////////////////////////////////////////////////////////////////
+
+function checkEmail($email) {
+  return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+function submit_contact() {
+  if (empty($_POST['f_contact_type'])
+      || empty($_POST['f_contact_content']))
+    return false;
+  $email = protect($_POST['f_contact_email']);
+  if (!empty($email) && !checkEmail($email))
+    return 'Invalid email';
+
+  include_once('Mail.php');
+  global $config;
+  $content = '
+<center>
+<h1><span style="color:#9acd32">A</span>ndroid <span style="color:#9acd32">R</span>eviews <span style="color:#9acd32">M</span>anager</h1>
+<i style="color:#9acd32">The Android Developer\'s best friend</i>
+</center>
+<br><br>
+
+Hello,<br>
+<br>
+<p>Thank you for contacting us. Here is your message:</p>
+<ul>
+<li><strong>Your name:</strong> '.protect($_POST['f_contact_name']).'</li>
+<li><strong>Your email:</strong> '.protect($_POST['f_contact_email']).'</li>
+<li><strong>The object of your message:</strong> '.protect($_POST['f_contact_type']).'</li>
+<li><strong>Your message:</strong><br /> 
+<p>'.str_replace("\n", '<br />', protect($_POST['f_contact_content'])).'</p></li>
+</ul>
+</center>
+';
+
+    $headers['From']    = 'noreply@androidreviewsmanager.com';
+    $headers['To']      = $email;
+    $headers['Subject'] = 'Android Reviews Manager: Thank you for contacting us';
+    $content = utf8_encode($content);
+    $headers['Content-Type'] = "text/html; charset=\"UTF-8\"";
+    $headers['Content-Transfer-Encoding'] = "8bit";
+  
+    $params['sendmail_path'] = '/usr/lib/sendmail';
+    $mail_object =& Mail::factory('sendmail', $params);
+
+    if (!empty($email))
+      $mail_object->send($headers['To'], $headers, $content);
+
+    if (empty($email))
+      $email = 'noreply@androidreviewsmanager.com';
+    $headers['From']    = $email;
+    $headers['To']      = $config['email_admin'];
+    if (($mail_object->send($headers['To'], $headers, $content)) !== true)
+      return 'Couldn\'t send your message. Try again later.';
+    return true;
+}
+
+//////////////////////////////////////////////////////////////////
 // Summary
 //////////////////////////////////////////////////////////////////
 

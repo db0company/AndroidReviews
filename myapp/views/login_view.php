@@ -134,8 +134,10 @@
 
   <footer class="text-right">
     <a href="#about" data-toggle="modal" data-target="#modalAbout">About</a> - 
+    <a href="#feedback" data-toggle="modal" data-target="#modalFeedback">Contact</a> -
     <a href="#terms" data-toggle="modal" data-target="#modalTerms">Terms Of Service</a> - 
     <a href="#privacy" data-toggle="modal" data-target="#modalPrivacy">Privacy Policy</a>
+
   </footer> <!-- text-right -->
 
 </div> <!-- container -->

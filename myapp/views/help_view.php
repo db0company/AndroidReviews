@@ -1,4 +1,4 @@
-<div class="faq_droid text-android pull-right" style="font-size: 4em;margin:30px">
+<div class="faq_droid text-android pull-right visible-lg visible-md" style="font-size: 4em;margin:30px">
   <i class="fa fa-android fa-5x"></i>
 </div>
 
@@ -6,7 +6,7 @@
 
 <hr>
 
-<dl>
+<dl style="max-width:800px">
 
   <dt>Why Android Reviews Manager?</dt>
 
@@ -69,10 +69,13 @@
     <p>Because Google sends reviews based upon the country of your IP. So we had to set up a sophisticated VPN architecture to handle internationalization. In the beta, only 2 countries are supported: United States and France. A Geographic coverage extension will come progressively depending upon load and user feedback.</p>
   </dd>
 
-<!--  <dt>Feedback & support</dt>
+  <dt>Feedback & support</dt>
 
   <dd>
-    <p>Send us your feedback to feedback [at] androidreviewsmanager [dot] com. It’ll help us bring you the Best Android Reviews Tracking and Management Solution Ever. ;)
+    <p>Send us your feedback, it’ll help us bring you the Best Android Reviews Tracking and Management Solution Ever. ;)</p>
+    <p class="text-right">
+	<a href="#feedback" data-toggle="modal" data-target="#modalFeedback" class="btn btn-lg btn-android">Contact us</a>
+    </p>
   </dd>
--->
+
 </dl>

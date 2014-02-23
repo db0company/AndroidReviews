@@ -144,3 +144,45 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<?php if (gettype(($msg = submit_contact())) == 'string') { ?>
+<?php viewAlert('danger', $msg); ?>
+<?php } elseif ($msg === true) { ?>
+<?php viewAlert('android', 'Thanks for your message!'); ?>
+<?php } ?>
+<div class="modal fade" id="modalFeedback" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Contact us</h4>
+      </div>
+      <form method="post">
+	<div class="modal-body">
+	  <select name="f_contact_type" class="form-control">
+	    <option>Ask a question</option>
+	    <option>Say hi!</option>
+	    <option>Suggest an idea</option>
+	    <option>Report a bug</option>
+	    <option>Something else</option>
+	  </select>
+	  <br />
+	  <div class="row">
+	    <div class="col-md-6">
+	      <input type="text" name="f_contact_name" placeholder="Your name" value="" class="form-control" />
+	    </div>
+	    <div class="col-md-6">
+	      <input type="email" name="f_contact_email" placeholder="Your e-mail address"
+		     value="<?= isset($email) ? $email : '' ?>" class="form-control" />
+	    </div>
+	  </div>
+	  <br />
+	  <textarea name="f_contact_content" placeholder="Your message" class="form-control" rows="6" required></textarea>
+	</div>
+	<div class="modal-footer">
+          <button type="submit" class="btn btn-android">Submit</button>
+	</div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

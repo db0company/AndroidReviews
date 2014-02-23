@@ -22,3 +22,5 @@ $config['api']['countries'] = array('test', 'us', 'fr');
 $config['api']['default_country'] = 'us';
 
 $config['website']['url'] = 'http://androidreviewsmanager.com/';
+$config['email_admin'] = 'jerome@explolab.com';
+
