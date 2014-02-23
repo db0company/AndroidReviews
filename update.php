@@ -35,12 +35,12 @@ Hello,<br>
       $reviews = $app['reviews'];
       $app = $app['app'];
 
-      $content .= '<a href="'.$config['website']['url'].'apps/reviews?id='.$app_id.'">';
+      $link = '<a href="'.$config['website']['url'].'apps/reviews?id='.$app_id.'">';
       $content .= '<tr>
-<td style="width:30%"><img src="'.$app['icon'].'">
-'.$app['title'].'</td>
-<td><div style="display: inline-block; color: #ffffff; text-decoration: none; font-weight: bold; padding: 20px; background-color: #9acd32; border-radius: 10px; margin: 10px;">
-Reply</div></td>
+<td style="width:30%">'.$link.'<img src="'.$app['icon'].'">
+'.$app['title'].'</a></td>
+<td>'.$link.'<div style="display: inline-block; color: #ffffff; text-decoration: none; font-weight: bold; padding: 20px; background-color: #9acd32; border-radius: 10px; margin: 10px;">
+Reply</div></a></td>
 </tr>';
 
       foreach ($reviews as $review) {
@@ -55,7 +55,6 @@ Reply</div></td>
 	}
 	$content .= '</td></tr>';
       }
-      $content .= '</a>';
     }
     $content .= '</table>';
   }
