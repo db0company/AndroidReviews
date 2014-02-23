@@ -103,7 +103,9 @@
 
 	<p>The laws of France, will apply to any disputes arising out of or relating to these terms or the Service. All claims arising out of or relating to these terms or the Service will be litigated exclusively in the court of Paris, France, and you and Android Reviews Manager consent to personal jurisdiction in those courts.</p>
 
-	<p>If you need to contact us, send an email to: contact [at] androidreviewsmanager [dot] com.
+	<p class="text-right">
+	  <a href="#feedback" data-toggle="modal" data-target="#modalFeedback" class="btn btn-lg btn-android">Contact us</a>
+	</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-android" data-dismiss="modal">Got it!</button>

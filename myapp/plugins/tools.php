@@ -92,23 +92,26 @@ function submit_contact() {
 <i style="color:#9acd32">The Android Developer\'s best friend</i>
 </center>
 <br><br>
+</center>
 
 Hello,<br>
 <br>
-<p>Thank you for contacting us. Here is your message:</p>
+<p>You recently submitted the following inquiry/feedback on our website:</p>
 <ul>
 <li><strong>Your name:</strong> '.protect($_POST['f_contact_name']).'</li>
 <li><strong>Your email:</strong> '.protect($_POST['f_contact_email']).'</li>
 <li><strong>The object of your message:</strong> '.protect($_POST['f_contact_type']).'</li>
 <li><strong>Your message:</strong><br /> 
-<p>'.str_replace("\n", '<br />', protect($_POST['f_contact_content'])).'</p></li>
+<p><i>'.str_replace("\n", '<br />', protect($_POST['f_contact_content'])).'</i></p></li>
 </ul>
-</center>
+<p>We\'ll do our best to answer to your request soon.<p>
+<p>Thank you,</p>
+<p>The Android Reviews Manager Team</p>
 ';
 
     $headers['From']    = 'noreply@androidreviewsmanager.com';
     $headers['To']      = $email;
-    $headers['Subject'] = 'Android Reviews Manager: Thank you for contacting us';
+    $headers['Subject'] = 'Your Android Reviews Manager Inquiry/Feedback';
     $content = utf8_encode($content);
     $headers['Content-Type'] = "text/html; charset=\"UTF-8\"";
     $headers['Content-Transfer-Encoding'] = "8bit";
@@ -315,6 +318,27 @@ function viewTrackedApps($tracked) {
        <?php viewGrid($per_line, $tracked, $viewApp); ?>
      </div>
 <?php
+}
+
+function viewRatingPics($rating) {
+  global $config;
+  $html = '<div>';
+  $full = floor($rating);
+  for ($i = 0; $i < $full; $i++)
+    $html .= '<img src="'.$config['website']['url'].'img/star_full.png">';
+  $rest = $rating - $full;
+  if ($full == 5);
+  elseif ($rest < 0.25)
+    $html .= '<img src="'.$config['website']['url'].'img/star_empty.png">';
+  elseif ($rest >= 0.25 && $rest <= 0.75)
+    $html .= '<img src="'.$config['website']['url'].'img/star_half.png">';
+  else
+    $html .= '<img src="'.$config['website']['url'].'img/star_full.png">';
+  $empty = 5 - $full - 1;
+  for ($i = 0; $i < $empty; $i++)
+    $html .= '<img src="'.$config['website']['url'].'img/star_empty.png">';
+  $html .= '</div>';
+  return $html;
 }
 
 function viewRatingStars($rating) {
