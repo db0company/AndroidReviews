@@ -75,10 +75,9 @@ Unfollow all Apps to stop receiving this daily report.</small>
   $params['sendmail_path'] = '/usr/lib/sendmail';
   
   $mail_object =& Mail::factory('sendmail', $params);
-  //$mail_object->send($headers['To'], $headers, $content);
+  $mail_object->send($headers['To'], $headers, $content);
 
-  echo $content;
-  //echo 'Email sent! '.$email;
+  echo 'Email sent! '.$email."\n";
 }
 
 
@@ -110,6 +109,8 @@ foreach ($users as $user) {
     }
   }
   if ($flag)
-    sendMailNewReviews($user, $newReviews);
+    sendMailNewReviews($user['email'], $newReviews);
+  else
+    echo 'No email for '.$user['email']."\n";
 }
 
