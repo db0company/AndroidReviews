@@ -35,11 +35,21 @@
 	    <i class="fa fa-question"></i></a>
 	  <a href="<?= getUrl('logout') ?>">
 	    <i class="fa fa-power-off"></i></a>
-	  <?php foreach ($tracked as $trackedApp) { ?>
+	  <?php $trackedAlph = $tracked; // order by alpha
+		usort($trackedAlph, function($app1, $app2) {
+		  return strcmp($app1['id'], $app2['id']);
+		}); ?>
+	  <?php foreach ($trackedAlph as $trackedApp) { ?>
 	  <a href="<?= getUrl('reviews'),
 		   $trackedApp['id'] ?>"<?= $page == 'app' && $trackedApp['id'] == $app['id'] ?
 					    ' class="active"' : ''?>>
-	    <img src="<?= $trackedApp['icon'] ?>" alt="<?= $trackedApp['title'] ?>"></a>
+	    <img src="<?= $trackedApp['icon'] ?>" alt="<?= $trackedApp['title'] ?>">
+	    <?php if ($trackedApp['unread'] > 99) { ?>
+	    <span class="pastille">+</span>
+	    <?php } else if ($trackedApp['unread'] > 0) { ?>
+	    <span class="pastille"><?= $trackedApp['unread'] ?></span>
+	    <?php } ?>
+	  </a>
 	  <?php } ?>
 	</nav>
       </div> <!-- col -->

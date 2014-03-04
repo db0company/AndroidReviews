@@ -201,6 +201,7 @@ nav {
 	}
 	&:hover, &:focus {
 	    border-left: 5px @darkcolor solid;
+	    text-decoration: none;
 	    img {
 		opacity: 1;
 	    }
@@ -208,6 +209,21 @@ nav {
     }
     .active {
 	border-left: 5px @maincolor solid;
+    }
+    .pastille {
+	@width: 18px;
+	position: relative;
+	margin-left: ((@width + 4px) * -1);
+	top: -15px;
+	left: 8px;
+	width: @width;
+	height: @width;
+	padding: 2px;
+	display: inline-block;
+	font-size: 11px;
+	background: @maincolor;
+	color: white;
+	border-radius: 50%;
     }
 }
 

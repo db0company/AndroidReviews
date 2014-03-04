@@ -1,4 +1,4 @@
-<?php
+0;256;0c<?php
 
 class Apps_Controller extends TinyMVC_Controller {
 
@@ -21,11 +21,15 @@ class Apps_Controller extends TinyMVC_Controller {
     if (($tracked = $this->appmodel->getTracked($email)) === false)
       $errors[] = $this->appmodel->lastError;
 
+    // Get tracked Apps
+    if (($tracked_to_display = $this->appmodel->getTracked($email, 'view_unread')) === false)
+      $errors[] = $this->appmodel->lastError;
 
     // View
     $this->view->assign('page', 'apps');
     $this->view->assign('errors', $errors);
     $this->view->assign('tracked', $tracked);
+    $this->view->assign('tracked_to_display', $tracked_to_display);
     $this->view->display('template_header');
     $this->view->assign('email', $email);
     $this->view->display('template_menu');
