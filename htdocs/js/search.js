@@ -57,17 +57,18 @@ function switchTrackClick(button) {
 		});
 }
 
-$("[name='f_track_submit']").click(function(e) {
-	e.preventDefault();
-	switchTrackClick($(this));
-    });
-
 ////////////////////////////////////////////
 // Track All Apps
 ////////////////////////////////////////////
 
 function updateTotal() {
     $(".total-search").text($(".well").length);
+
+    $("[name='f_track_submit']").unbind('click');
+    $("[name='f_track_submit']").click(function(e) {
+	    e.preventDefault();
+	    switchTrackClick($(this));
+	});
 
     $(".track-all").unbind('click');
     $(".track-all").click(function(e) {
