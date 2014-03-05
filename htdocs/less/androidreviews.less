@@ -12,6 +12,14 @@
 @navsize: 100%;
 @generalpadding: 20px;
 
+.transition(@properties) {
+  -webkit-transition: @properties;
+     -moz-transition: @properties;
+       -o-transition: @properties;
+          transition: @properties;
+  -webkit-backface-visibility: hidden;
+}
+
 body {
     background-color: white;
 }
@@ -592,6 +600,11 @@ and (max-width : 992px) {
 	border-bottom: 1px solid @bordercolor;
 	margin-bottom: 10px;
 	padding: 0 10px;
+	max-height: 75px;
+	.transition(~"max-height .30s");
+	&:hover {
+	    max-height: none;
+	}
 	a {
 	    display: inline-block;
 	    border: 0;
