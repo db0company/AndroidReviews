@@ -6,7 +6,8 @@ $urls = array(
               'search' => '/apps/search',
 	      'reviews' => '/apps/reviews?id=',
 	      'logout' => '/logout/',
-	      'help' => '/help/'
+	      'help' => '/help/',
+	      'settings' => '/settings/',
 	      );
 
 

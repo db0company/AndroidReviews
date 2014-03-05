@@ -17,6 +17,7 @@
             <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
           </form>
 	  <div class="email nav navbar-nav navbar-right">
+	    <a href="<?= getUrl('settings') ?>"><i class="fa fa-cog"></i></a>
 	    <?= $email ?>
 	    -
 	    <a href="<?= getUrl('logout') ?>">Sign out</a>

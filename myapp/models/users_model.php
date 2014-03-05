@@ -153,4 +153,20 @@ Reset your password</a>
     return true;
   }
 
+  public function deleteAccount($email) {
+    $q = $this->db->pdo->prepare('DELETE FROM apps_tracker WHERE user=?');
+    try { $q->execute(array($email)); }
+    catch (PDOException $e) { return $this->setError(PdoGetMessage($q)); }
+    $q = $this->db->pdo->prepare('DELETE FROM forgot_password WHERE email=?');
+    try { $q->execute(array($email)); }
+    catch (PDOException $e) { return $this->setError(PdoGetMessage($q)); }
+    $q = $this->db->pdo->prepare('DELETE FROM reviews_tracker WHERE user=?');
+    try { $q->execute(array($email)); }
+    catch (PDOException $e) { return $this->setError(PdoGetMessage($q)); }
+    $q = $this->db->pdo->prepare('DELETE FROM users WHERE email=?');
+    try { $q->execute(array($email)); }
+    catch (PDOException $e) { return $this->setError(PdoGetMessage($q)); }
+    return true;
+  }
+
 }
