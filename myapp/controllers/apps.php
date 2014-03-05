@@ -1,4 +1,4 @@
-0;256;0c<?php
+<?php
 
 class Apps_Controller extends TinyMVC_Controller {
 
