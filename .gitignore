@@ -4,7 +4,6 @@ api/android-market-api-php
 api/icons/*
 htdocs/index.php
 htdocs/img/appsicons
-htdocs/css/androidreviews.*css
 api/conf.php
 *~
 #*#
