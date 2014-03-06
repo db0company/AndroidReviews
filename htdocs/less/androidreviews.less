@@ -215,6 +215,9 @@ nav {
 	    }
 	}
     }
+    a[href="#more"] {
+	display: none;
+    }
     .active {
 	border-left: 5px @maincolor solid;
     }
@@ -600,20 +603,22 @@ and (max-width : 992px) {
 	border-bottom: 1px solid @bordercolor;
 	margin-bottom: 10px;
 	padding: 0 10px;
-	max-height: 75px;
-	.transition(~"max-height .30s");
-	&:hover {
-	    max-height: none;
-	}
 	a {
 	    display: inline-block;
 	    border: 0;
-	    padding: 5px;
+	    padding: 5px 15px;
 	    &:hover, &:focus {
 		background-color: @darkcolor;
 		border: 0;
 		color: white;
 	    }
+	    &.app {
+		display: none;
+		padding: 5px;
+	    }
+	}
+	a[href="#more"] {
+	    display: inline-block;
 	}
 	.active {
 	    background-color: @maincolor;

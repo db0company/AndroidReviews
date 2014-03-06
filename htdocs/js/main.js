@@ -17,4 +17,8 @@ function setEqualHeight() {
 $(document).ready(function() {
 	setEqualHeight();
 	$(window).on('resize', setEqualHeight);
+	$('nav a[href="#more"]').click(function(e) {
+		e.preventDefault();
+		$("nav a.app").toggle('slow');
+	    });
     });

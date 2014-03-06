@@ -31,19 +31,21 @@
 	  <a href="<?= getUrl('apps') ?>"<?= $page == 'apps' ? ' class="active"' : ''?>>
 	    <i class="fa fa-android"></i></a>
 	  <a href="<?= getUrl('search') ?>"<?= $page == 'search' ? ' class="active"' : ''?>>
-	    <i class="fa fa-plus"></i></a>
+	    <i class="fa fa-search"></i></a>
 	  <a href="<?= getUrl('help') ?>"<?= $page == 'help' ? ' class="active"' : ''?>>
 	    <i class="fa fa-question"></i></a>
 	  <a href="<?= getUrl('logout') ?>">
 	    <i class="fa fa-power-off"></i></a>
+	  <a href="#more">
+	    <i class="fa fa-plus"></i></a>
 	  <?php $trackedAlph = $tracked; // order by alpha
 		usort($trackedAlph, function($app1, $app2) {
 		  return strcmp($app1['id'], $app2['id']);
 		}); ?>
 	  <?php foreach ($trackedAlph as $trackedApp) { ?>
-	  <a href="<?= getUrl('reviews'),
-		   $trackedApp['id'] ?>"<?= $page == 'app' && $trackedApp['id'] == $app['id'] ?
-					    ' class="active"' : ''?>>
+	  <a href="<?= getUrl('reviews'), $trackedApp['id'] ?>"
+	     class="app <?= $page == 'app' && $trackedApp['id'] == $app['id'] ?
+			' active' : '' ?>">
 	    <img src="<?= $trackedApp['icon'] ?>" alt="<?= $trackedApp['title'] ?>">
 	    <?php if ($trackedApp['unread'] > 99) { ?>
 	    <span class="pastille">+</span>
