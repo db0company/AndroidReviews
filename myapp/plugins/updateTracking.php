@@ -15,7 +15,7 @@ function getCountries($db, $appId) {
   return $countries;
 }
 
-function updateTracking($db, $market, $email, $appId, $continue = true) {
+function updateTracking($db, $market, $email, $appId, $continue = true, $all = false) {
   if (!($countries = getCountries($db, $appId)))
     return 'Couldn\'t get app countries';
 
@@ -45,7 +45,7 @@ function updateTracking($db, $market, $email, $appId, $continue = true) {
 				$review['creationTime'],
 				));
 	$qReviewCheck->execute(array($id, $email));
-	if (!$qReviewCheck->rowCount()) { // review not tracked
+	if ($all || !$qReviewCheck->rowCount()) { // review not tracked
 	  $newReviews[] = $review;
 	  $qReviewTracker->execute(array($id, $email));
 	}

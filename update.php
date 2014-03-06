@@ -42,8 +42,8 @@ function sendMailNewReviews($email, $newReviews) {
       $content .= '<tr>
 <td style="width:30%">'.$link.'<img src="'.$app['icon'].'">&nbsp;&nbsp;
 '.$app['title'].'</a></td>
-<td><a href="https://play.google.com/apps/publish#ReviewsPlace:p='.$app['packageName'].'">'.'&nbsp;&nbsp;&nbsp;&nbsp;<div style="display: inline-block; color: #ffffff; text-decoration: none; font-weight: bold; padding: 20px; background-color: #9acd32; border-radius: 10px; margin: 10px; width: 100px;">
-Reply</div>&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+<td><a style="text-decoration: none;" href="https://play.google.com/apps/publish#ReviewsPlace:p='.$app['packageName'].'">'.'<div style="margin: 10px;"><button style="text-align: center; color: #ffffff; font-weight: bold; padding: 5px; background-color: #9acd32; border-radius: 7px; width: 70px;">
+Reply</button></div></a></td>
 </tr>';
 
       foreach ($reviews as $review) {
@@ -60,7 +60,7 @@ Reply</div>&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
 	$content .= '</td></tr>';
       }
       $content .= '<tr><td></td><td>';
-      $content .= '<p>Done processing these new users\' reviews? Then don\'t forget to '.$link.'<strong>mark all of them as read</strong></a>.</p>';
+      $content .= '<small><i>Done processing these new users\' reviews? Then don\'t forget to '.$link.'<strong>mark all of them as read</strong></a>.</i></small></p>';
       $content .= '<br /><br /></td></tr>';
     }
     $content .= '</table>';
@@ -110,12 +110,12 @@ foreach ($users as $user) {
   $newReviews = array();
   foreach ($apps as $app) {
     $flag = true;
-    $reviews = updateTracking($db, $market, $app['user'], $app['app_id']);
+    $reviews = updateTracking($db, $market, $app['user'], $app['app_id'], true);
     if (!empty($reviews)) {
       $newReviews[$app['app_id']]['reviews'] = $reviews;
       $newReviews[$app['app_id']]['app'] = array('id' => 'app_id',
 						 'title' => $app['app_name'],
-						 'packageName' => $app['apppackage'],
+						 'packageName' => $app['app_package'],
 						 'icon' => $app['app_icon']);
     }
   }
