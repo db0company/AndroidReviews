@@ -105,11 +105,29 @@ mv master api/android-market-api-php
 rm master.zip
 ```
 
-###### Configure your Apache
+###### Configure your webserver
 
 Your domain should point on the `api` folder.
 It should start with `country.api.yourdomain` where country is the country code where your server is hosted (`us` or `fr` or instance).
 You should also point a sub domain `files.country.api.yourdomain` to the `api/icons` folder.
+
+If you use apache, put this .htaccess file in /api
+
+```
+Options +FollowSymlinks
+Options +Indexes
+RewriteEngine on
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule   ^([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-/]+)$   api.php?resource=$1&id=$2 [QSA]
+RewriteRule   ^([a-zA-Z0-9_\-]+)/*$   api.php?resource=$1 [QSA]
+```
+
+If you use nginx add this redirection rule:
+
+ rewrite ^/([a-zA-Z0-9_\-]+)/*$ /api.php?resource=$1;
+
 
 Add new countries
 -----------------
