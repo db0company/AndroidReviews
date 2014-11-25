@@ -16,6 +16,9 @@
             </div>
             <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
           </form>
+          <?php if (!empty($notice)): ?>
+          <?= $notice ?>
+          <?php endif ?>
 	  <div class="email nav navbar-nav navbar-right">
 	    <a href="<?= getUrl('settings') ?>"><i class="fa fa-cog"></i></a>
 	    <?= $email ?>
@@ -34,6 +37,8 @@
 	    <i class="fa fa-search"></i></a>
 	  <a href="<?= getUrl('help') ?>"<?= $page == 'help' ? ' class="active"' : ''?>>
 	    <i class="fa fa-question"></i></a>
+      <a href="<?= getUrl('trackUpdatedApplication') ?>"<?= $page == 'trackUpdatedApplication' ? ' class="active"' : ''?>>
+        <i class="fa fa-refresh"></i></a>
 	  <a href="<?= getUrl('logout') ?>">
 	    <i class="fa fa-power-off"></i></a>
 	  <a href="#more">
