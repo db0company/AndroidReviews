@@ -421,7 +421,7 @@ function viewReviews($reviews, $isTracked, $errorsReviews, $packageName, $viewSt
 		<i class="fa fa-<?= $review['read'] ? 'envelope' : 'envelope-o' ?>"></i>
 		<span>Mark as <?= $review['read'] ? 'unread' : 'read' ?></span>
 	      </button>
-	      <a href="https://play.google.com/apps/publish#ReviewsPlace:p=<?= $packageName ?>"
+	      <a href="https://play.google.com/apps/publish/?dev_acc=05710425058330196807#ReviewsPlace:p=<?= $packageName ?>"
 		 target="_blank" class="btn btn-default">
 		<i class="fa fa-reply"></i>
 		Reply
