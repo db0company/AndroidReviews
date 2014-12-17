@@ -93,8 +93,9 @@ class Apps_Controller extends TinyMVC_Controller {
     checkLogin();
     $market = getMarket();
     $this->load->model('Apps_Model', 'appmodel');
-    $count = $this->appmodel->trackUpdatedApplication($_SESSION['email'], $market);
-    $this->view->assign('notice', "$count application(s) updated.");
+    $updatedAppCount = $this->appmodel->trackUpdatedApplication($_SESSION['email'], $market);
+    $this->appmodel->refreshReviews($_SESSION['email'], $market);
+    $this->view->assign('notice', "$updatedAppCount application(s) updated.");
     $this->index();
   }
 
@@ -179,4 +180,3 @@ class Apps_Controller extends TinyMVC_Controller {
     $this->view->display('template_footer');
   }
 }
-

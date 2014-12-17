@@ -23,6 +23,14 @@ class Apps_Model extends TinyMVC_Model {
     return $updatedCount;
   }
 
+  public function refreshReviews($email, $market) {
+    $myApplications = $this->getTracked($email);
+    $updatedCount = 0;
+    foreach ($myApplications as $application) {
+      updateTracking($this->db->pdo, $market, $email, $application['id'], true);
+    }
+  }
+
   private function isApplicationUpdated($application, $market) {
     $country = $this->getAppCountry($application['id']);
     if (!$country) {
