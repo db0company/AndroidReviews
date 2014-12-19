@@ -94,7 +94,6 @@ class Apps_Controller extends TinyMVC_Controller {
     $market = getMarket();
     $this->load->model('Apps_Model', 'appmodel');
     $updatedAppCount = $this->appmodel->trackUpdatedApplication($_SESSION['email'], $market);
-    $this->appmodel->refreshReviews($_SESSION['email'], $market);
     $this->view->assign('notice', "$updatedAppCount application(s) updated.");
     $this->index();
   }

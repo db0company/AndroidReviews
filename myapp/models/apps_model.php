@@ -12,23 +12,16 @@ class Apps_Model extends TinyMVC_Model {
     foreach ($myApplications as $application) {
       $lastApplication = $this->isApplicationUpdated($application, $market);
       if (!$lastApplication) {
-        break;
+        $this->updateTracking($market, $email, $application['id']); // refresh reviews
+        continue;
       }
       if ($this->stopTracking($email, $application['id'])) {
-        if ($this->startTracking($market, $email, $lastApplication['id'])) {
+        if ($this->startTracking($market, $email, $lastApplication['id'])) { // will refresh reviews
           ++$updatedCount;
         }
       }
     }
     return $updatedCount;
-  }
-
-  public function refreshReviews($email, $market) {
-    $myApplications = $this->getTracked($email);
-    $updatedCount = 0;
-    foreach ($myApplications as $application) {
-      updateTracking($this->db->pdo, $market, $email, $application['id'], true);
-    }
   }
 
   private function isApplicationUpdated($application, $market) {
