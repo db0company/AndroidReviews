@@ -6,8 +6,8 @@ Install the Website
 
 ### Requirements
 
-* A web server (ex: Apache)
-* PHP 5.3+ with curl support
+* An Apache server. Minimum efforts would be made to port the .htaccess and provide compatibilty with other webservers.
+* PHP 5.3+ with curl and mysql support
 * MySQL
 * `lessc` (installed from packages or `npm`)
 
@@ -67,6 +67,7 @@ Edit the header to comment or remove the 2 lines about less files and uncomment 
 ##### Configure your webserver
 
 Your domain should point on the `htdocs` folder.
+You should have allowed url rewriting.
 
 Install the API
 ---------------
@@ -101,7 +102,7 @@ $EDITOR api/conf.php
 ```shell
 wget https://github.com/splitfeed/android-market-api-php/archive/master.zip
 unzip master.zip
-mv master api/android-market-api-php
+mv android-market-api-php-master/ api/android-market-api-php
 rm master.zip
 ```
 

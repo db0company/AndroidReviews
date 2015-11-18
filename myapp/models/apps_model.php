@@ -1,8 +1,60 @@
 <?php
 
+include_once(__DIR__ . '/../plugins/updateTracking.php');
+
 class Apps_Model extends TinyMVC_Model {
 
   var $lastError;
+
+  public function trackUpdatedApplication($email, $market) {
+    $myApplications = $this->getTracked($email);
+    $updatedCount = 0;
+    foreach ($myApplications as $application) {
+      $lastApplication = $this->isApplicationUpdated($application, $market);
+      if (!$lastApplication) {
+        $this->updateTracking($market, $email, $application['id']); // refresh reviews
+        continue;
+      }
+      if ($this->stopTracking($email, $application['id'])) {
+        if ($this->startTracking($market, $email, $lastApplication['id'])) { // will refresh reviews
+          ++$updatedCount;
+        }
+      }
+    }
+    return $updatedCount;
+  }
+
+  private function isApplicationUpdated($application, $market) {
+    $country = $this->getAppCountry($application['id']);
+    if (!$country) {
+      return false;
+    }
+    $market->country = $country;
+    $lastApplications = $market->searchApps($application['packageName']);
+    if (empty($lastApplications)) {
+      // the app does not exists anymore
+      return false;
+    }
+    foreach ($lastApplications as $lastApplication) {
+      if ($lastApplication['packageName'] == $application['packageName']) {
+        if ($lastApplication['id'] == $application['id']) {
+          // not updated
+          return false;
+        } else {
+          return $lastApplication;
+        }
+      }
+    }
+    return false;
+  }
+
+  private function getAppCountry($id) {
+    $result = $this->db->query_all('SELECT country FROM apps_countries WHERE app_id=?', array($id));
+    if (empty($result)) {
+      return false;
+    }
+    return $result[0]['country'];
+  }
 
   private function setError($msg) {
     $this->lastError = $msg;
@@ -32,7 +84,7 @@ class Apps_Model extends TinyMVC_Model {
 
   function searchApps($market, $query, $trackedApps, $index = 0, $limit = 9) {
     if (!($apps = $market->searchApps($query, false, $index, $limit, $this->trackedToId($trackedApps))))
-      return $this->setError('Couldn\'t get apps from the Android Market API.');
+      return $this->setError('Couldn\'t get apps from the Android Market API.1');
     return $apps;
   }
 
@@ -76,7 +128,7 @@ class Apps_Model extends TinyMVC_Model {
 
   private function addApp($app) {
     if (!$app)
-      return $this->setError('Couldn\'t get the app on the Android Market.');
+      return $this->setError('Couldn\'t get the app on the Android Market.2');
     $qApp = $this->db->pdo->prepare('INSERT INTO apps(id, packageName, title, icon, creator, rating, ratingsCount, description, contactEmail) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE packageName=?, title=?, icon=?, creator=?, rating=?, ratingsCount=?, description=?, contactEmail=?');
     try { $qApp->execute(array(
 			       $app['id'],
@@ -114,7 +166,7 @@ class Apps_Model extends TinyMVC_Model {
       }
     }
     if (!($app = $market->getApp($appId, true, $tracked)))
-      return $this->setError('Couldn\'t get the app on the Android Market.');
+      return $this->setError('Couldn\'t get the app on the Android Market.4');
     return $app;
   }
 

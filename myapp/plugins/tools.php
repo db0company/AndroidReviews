@@ -1,14 +1,15 @@
 <?php
 
 $urls = array(
-	      'login' => '/login/',
-	      'apps' => '/apps/',
-              'search' => '/apps/search',
-	      'reviews' => '/apps/reviews?id=',
-	      'logout' => '/logout/',
-	      'help' => '/help/',
-	      'settings' => '/settings/',
-	      );
+  'login' => '/login/',
+  'apps' => '/apps/',
+  'search' => '/apps/search',
+  'reviews' => '/apps/reviews?id=',
+  'logout' => '/logout/',
+  'help' => '/help/',
+  'settings' => '/settings/',
+  'trackUpdatedApplication' => '/apps/trackUpdatedApplication',
+);
 
 
 function getUrl($name) {
@@ -42,6 +43,15 @@ function protect($string) {
 
 function idToValid($str) {
   return str_replace('.', '_', str_replace(':', '_', $str));
+}
+
+// Log
+
+function flog($string) {
+  $myFile = "/tmp/arm.log";
+  $fh = fopen($myFile, 'a') or die("can't open file");;
+  fwrite($fh, $string.PHP_EOL);
+  fclose($fh);
 }
 
 //////////////////////////////////////////////////////////////////
@@ -102,7 +112,7 @@ Hello,<br>
 <li><strong>Your name:</strong> '.protect($_POST['f_contact_name']).'</li>
 <li><strong>Your email:</strong> '.protect($_POST['f_contact_email']).'</li>
 <li><strong>The object of your message:</strong> '.protect($_POST['f_contact_type']).'</li>
-<li><strong>Your message:</strong><br /> 
+<li><strong>Your message:</strong><br />
 <p><i>'.str_replace("\n", '<br />', protect($_POST['f_contact_content'])).'</i></p></li>
 </ul>
 <p>We\'ll do our best to answer to your request soon.<p>
@@ -116,7 +126,7 @@ Hello,<br>
     $content = utf8_encode($content);
     $headers['Content-Type'] = "text/html; charset=\"UTF-8\"";
     $headers['Content-Transfer-Encoding'] = "8bit";
-  
+
     $params['sendmail_path'] = '/usr/lib/sendmail';
     $mail_object =& Mail::factory('sendmail', $params);
 
@@ -237,7 +247,7 @@ function viewSearchApps($searchApps, $errorSearch, $currindex = 0) {
     } elseif (empty($searchApps) || !count($searchApps)) {
       viewAlert('info', 'No result match your search.');
     } else { ?>
-    <div class="text-right">  
+    <div class="text-right">
       <button class="btn btn-default btn-xs untrack-all">Untrack all <span class="total-search"></span> Apps</button>
       <button class="btn btn-default btn-xs track-all">Track all <span class="total-search"></span> Apps</button>
     </div> <!-- text-right -->
@@ -358,7 +368,7 @@ function viewRatingStars($rating) {
     echo'<i class="fa fa-2x fa-star"></i>';
   $empty = 5 - $full - 1;
   for ($i = 0; $i < $empty; $i++)
-    echo '<i class="fa fa-2x fa-star-o"></i>';  
+    echo '<i class="fa fa-2x fa-star-o"></i>';
   echo '</div>';
 }
 
@@ -411,7 +421,7 @@ function viewReviews($reviews, $isTracked, $errorsReviews, $packageName, $viewSt
 		<i class="fa fa-<?= $review['read'] ? 'envelope' : 'envelope-o' ?>"></i>
 		<span>Mark as <?= $review['read'] ? 'unread' : 'read' ?></span>
 	      </button>
-	      <a href="https://play.google.com/apps/publish#ReviewsPlace:p=<?= $packageName ?>"
+	      <a href="https://play.google.com/apps/publish/?dev_acc=05710425058330196807#ReviewsPlace:p=<?= $packageName ?>"
 		 target="_blank" class="btn btn-default">
 		<i class="fa fa-reply"></i>
 		Reply

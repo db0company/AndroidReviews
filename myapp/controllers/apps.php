@@ -89,6 +89,15 @@ class Apps_Controller extends TinyMVC_Controller {
     $this->view->display('template_footer');
   }
 
+  function trackUpdatedApplication() {
+    checkLogin();
+    $market = getMarket();
+    $this->load->model('Apps_Model', 'appmodel');
+    $updatedAppCount = $this->appmodel->trackUpdatedApplication($_SESSION['email'], $market);
+    $this->view->assign('notice', "$updatedAppCount application(s) updated.");
+    $this->index();
+  }
+
   ///////////////////////////////////////////////
 
   function reviews() {
@@ -170,4 +179,3 @@ class Apps_Controller extends TinyMVC_Controller {
     $this->view->display('template_footer');
   }
 }
-
